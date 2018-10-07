@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "walletframe.h"
-#include "bitcoingui.h"
+#include "telechaingui.h"
 #include "walletview.h"
 
 #include <cstdio>

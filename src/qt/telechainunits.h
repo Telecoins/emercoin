@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_BITCOINUNITS_H
-#define BITCOIN_QT_BITCOINUNITS_H
+#ifndef TELECHAIN_QT_BITCOINUNITS_H
+#define TELECHAIN_QT_BITCOINUNITS_H
 
 #include "amount.h"
 
@@ -125,4 +125,4 @@ private:
 };
 typedef BitcoinUnits::Unit BitcoinUnit;
 
-#endif // BITCOIN_QT_BITCOINUNITS_H
+#endif // TELECHAIN_QT_BITCOINUNITS_H

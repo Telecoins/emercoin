@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_TEST_RANDOM_H
-#define BITCOIN_TEST_RANDOM_H
+#ifndef TELECHAIN_TEST_RANDOM_H
+#define TELECHAIN_TEST_RANDOM_H
 
 #include "random.h"
 

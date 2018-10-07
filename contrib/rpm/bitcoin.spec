@@ -27,13 +27,13 @@ Source1:	http://download.oracle.com/berkeley-db/db-%{bdbv}.NC.tar.gz
 Source10:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/contrib/debian/examples/bitcoin.conf
 
 #man pages
-Source20:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/doc/man/bitcoind.1
-Source21:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/doc/man/bitcoin-cli.1
-Source22:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/doc/man/bitcoin-qt.1
+Source20:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/doc/man/telechaind.1
+Source21:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/doc/man/telecli.1
+Source22:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/doc/man/telechain-qt.1
 
 #selinux
 Source30:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/contrib/rpm/bitcoin.te
-# Source31 - what about bitcoin-tx and bench_bitcoin ???
+# Source31 - what about telechain-tx and bench_telechain ???
 Source31:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/contrib/rpm/bitcoin.fc
 Source32:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/contrib/rpm/bitcoin.if
 
@@ -141,9 +141,9 @@ Group:		Applications/System
 This package provides several command line utilities for interacting with a
 bitcoin-core daemon.
 
-The bitcoin-cli utility allows you to communicate and control a bitcoin daemon
-over RPC, the bitcoin-tx utility allows you to create a custom transaction, and
-the bench_bitcoin utility can be used to perform some benchmarks.
+The telecli utility allows you to communicate and control a bitcoin daemon
+over RPC, the telechain-tx utility allows you to create a custom transaction, and
+the bench_telechain utility can be used to perform some benchmarks.
 
 This package contains utilities needed by the bitcoin-server package.
 
@@ -182,12 +182,12 @@ popd
 make install DESTDIR=%{buildroot}
 
 mkdir -p -m755 %{buildroot}%{_sbindir}
-mv %{buildroot}%{_bindir}/bitcoind %{buildroot}%{_sbindir}/bitcoind
+mv %{buildroot}%{_bindir}/telechaind %{buildroot}%{_sbindir}/telechaind
 
 # systemd stuff
 mkdir -p %{buildroot}%{_tmpfilesdir}
 cat <<EOF > %{buildroot}%{_tmpfilesdir}/bitcoin.conf
-d /run/bitcoind 0750 bitcoin bitcoin -
+d /run/telechaind 0750 bitcoin bitcoin -
 EOF
 touch -a -m -t 201504280000 %{buildroot}%{_tmpfilesdir}/bitcoin.conf
 
@@ -202,7 +202,7 @@ OPTIONS=""
 # Don't change these unless you know what you're doing.
 CONFIG_FILE="%{_sysconfdir}/bitcoin/bitcoin.conf"
 DATA_DIR="%{_localstatedir}/lib/bitcoin"
-PID_FILE="/run/bitcoind/bitcoind.pid"
+PID_FILE="/run/telechaind/telechaind.pid"
 EOF
 touch -a -m -t 201504280000 %{buildroot}%{_sysconfdir}/sysconfig/bitcoin
 
@@ -214,7 +214,7 @@ After=syslog.target network.target
 
 [Service]
 Type=forking
-ExecStart=%{_sbindir}/bitcoind -daemon -conf=\${CONFIG_FILE} -datadir=\${DATA_DIR} -pid=\${PID_FILE} \$OPTIONS
+ExecStart=%{_sbindir}/telechaind -daemon -conf=\${CONFIG_FILE} -datadir=\${DATA_DIR} -pid=\${PID_FILE} \$OPTIONS
 EnvironmentFile=%{_sysconfdir}/sysconfig/bitcoin
 User=bitcoin
 Group=bitcoin
@@ -269,7 +269,7 @@ Name=Bitcoin
 Comment=Bitcoin P2P Cryptocurrency
 Comment[fr]=Bitcoin, monnaie virtuelle cryptographique pair à pair
 Comment[tr]=Bitcoin, eşten eşe kriptografik sanal para birimi
-Exec=bitcoin-qt %u
+Exec=telechain-qt %u
 Terminal=false
 Type=Application
 Icon=bitcoin128
@@ -284,7 +284,7 @@ touch -a -m -t 201511100546 %{buildroot}%{_datadir}/applications/bitcoin-core.de
 mkdir -p %{buildroot}%{_datadir}/kde4/services
 cat <<EOF > %{buildroot}%{_datadir}/kde4/services/bitcoin-core.protocol
 [Protocol]
-exec=bitcoin-qt '%u'
+exec=telechain-qt '%u'
 protocol=bitcoin
 input=none
 output=none
@@ -300,10 +300,10 @@ touch -a -m -t 201511100546 %{buildroot}%{_datadir}/kde4/services/bitcoin-core.p
 %endif
 
 # man pages
-install -D -p %{SOURCE20} %{buildroot}%{_mandir}/man1/bitcoind.1
-install -p %{SOURCE21} %{buildroot}%{_mandir}/man1/bitcoin-cli.1
+install -D -p %{SOURCE20} %{buildroot}%{_mandir}/man1/telechaind.1
+install -p %{SOURCE21} %{buildroot}%{_mandir}/man1/telecli.1
 %if %{_buildqt}
-install -p %{SOURCE22} %{buildroot}%{_mandir}/man1/bitcoin-qt.1
+install -p %{SOURCE22} %{buildroot}%{_mandir}/man1/telechain-qt.1
 %endif
 
 # nuke these, we do extensive testing of binaries in %%check before packaging
@@ -334,10 +334,10 @@ if [ `%{_sbindir}/sestatus |grep -c "disabled"` -eq 0 ]; then
 for selinuxvariant in %{selinux_variants}; do
 	%{_sbindir}/semodule -s ${selinuxvariant} -i %{_datadir}/selinux/${selinuxvariant}/bitcoin.pp &> /dev/null || :
 done
-%{_sbindir}/semanage port -a -t bitcoin_port_t -p tcp 8332
-%{_sbindir}/semanage port -a -t bitcoin_port_t -p tcp 8333
-%{_sbindir}/semanage port -a -t bitcoin_port_t -p tcp 18332
-%{_sbindir}/semanage port -a -t bitcoin_port_t -p tcp 18333
+%{_sbindir}/semanage port -a -t telechain_port_t -p tcp 8332
+%{_sbindir}/semanage port -a -t telechain_port_t -p tcp 8333
+%{_sbindir}/semanage port -a -t telechain_port_t -p tcp 18332
+%{_sbindir}/semanage port -a -t telechain_port_t -p tcp 18333
 %{_sbindir}/fixfiles -R bitcoin-server restore &> /dev/null || :
 %{_sbindir}/restorecon -R %{_localstatedir}/lib/bitcoin || :
 fi
@@ -374,7 +374,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %license COPYING db-%{bdbv}.NC-LICENSE
 %doc COPYING bitcoin.conf.example doc/README.md doc/bips.md doc/files.md doc/multiwallet-qt.md doc/reduce-traffic.md doc/release-notes.md doc/tor.md
-%attr(0755,root,root) %{_bindir}/bitcoin-qt
+%attr(0755,root,root) %{_bindir}/telechain-qt
 %attr(0644,root,root) %{_datadir}/applications/bitcoin-core.desktop
 %attr(0644,root,root) %{_datadir}/kde4/services/bitcoin-core.protocol
 %attr(0644,root,root) %{_datadir}/pixmaps/*.ico
@@ -382,7 +382,7 @@ rm -rf %{buildroot}
 %attr(0644,root,root) %{_datadir}/pixmaps/*.svg
 %attr(0644,root,root) %{_datadir}/pixmaps/*.png
 %attr(0644,root,root) %{_datadir}/pixmaps/*.xpm
-%attr(0644,root,root) %{_mandir}/man1/bitcoin-qt.1*
+%attr(0644,root,root) %{_mandir}/man1/telechain-qt.1*
 %endif
 
 %files libs
@@ -405,23 +405,23 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %license COPYING db-%{bdbv}.NC-LICENSE
 %doc COPYING bitcoin.conf.example doc/README.md doc/REST-interface.md doc/bips.md doc/dnsseed-policy.md doc/files.md doc/reduce-traffic.md doc/release-notes.md doc/tor.md
-%attr(0755,root,root) %{_sbindir}/bitcoind
+%attr(0755,root,root) %{_sbindir}/telechaind
 %attr(0644,root,root) %{_tmpfilesdir}/bitcoin.conf
 %attr(0644,root,root) %{_unitdir}/bitcoin.service
 %dir %attr(0750,bitcoin,bitcoin) %{_sysconfdir}/bitcoin
 %dir %attr(0750,bitcoin,bitcoin) %{_localstatedir}/lib/bitcoin
 %config(noreplace) %attr(0600,root,root) %{_sysconfdir}/sysconfig/bitcoin
 %attr(0644,root,root) %{_datadir}/selinux/*/*.pp
-%attr(0644,root,root) %{_mandir}/man1/bitcoind.1*
+%attr(0644,root,root) %{_mandir}/man1/telechaind.1*
 
 %files utils
 %defattr(-,root,root,-)
 %license COPYING
 %doc COPYING bitcoin.conf.example doc/README.md
-%attr(0755,root,root) %{_bindir}/bitcoin-cli
-%attr(0755,root,root) %{_bindir}/bitcoin-tx
-%attr(0755,root,root) %{_bindir}/bench_bitcoin
-%attr(0644,root,root) %{_mandir}/man1/bitcoin-cli.1*
+%attr(0755,root,root) %{_bindir}/telecli
+%attr(0755,root,root) %{_bindir}/telechain-tx
+%attr(0755,root,root) %{_bindir}/bench_telechain
+%attr(0644,root,root) %{_mandir}/man1/telecli.1*
 
 
 

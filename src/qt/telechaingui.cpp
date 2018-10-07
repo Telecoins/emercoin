@@ -6,9 +6,9 @@
 #include "config/bitcoin-config.h"
 #endif
 
-#include "bitcoingui.h"
+#include "telechaingui.h"
 
-#include "bitcoinunits.h"
+#include "telechainunits.h"
 #include "clientmodel.h"
 #include "guiconstants.h"
 #include "guiutil.h"

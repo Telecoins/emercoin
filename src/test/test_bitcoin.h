@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_TEST_TEST_BITCOIN_H
-#define BITCOIN_TEST_TEST_BITCOIN_H
+#ifndef TELECHAIN_TEST_TEST_TELECHAIN_H
+#define TELECHAIN_TEST_TEST_TELECHAIN_H
 
 #include "chainparamsbase.h"
 #include "key.h"

@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_SCRIPT_ISMINE_H
-#define BITCOIN_SCRIPT_ISMINE_H
+#ifndef TELECHAIN_SCRIPT_ISMINE_H
+#define TELECHAIN_SCRIPT_ISMINE_H
 
 #include "script/standard.h"
 
@@ -39,4 +39,4 @@ isminetype IsMine(const CKeyStore& keystore, const CTxDestination& dest, bool& i
 isminetype IsMine(const CKeyStore& keystore, const CTxDestination& dest, SigVersion = SIGVERSION_BASE);
 isminetype IsMine(bool& fName, const CKeyStore& keystore, const CScript& scriptPubKey);
 
-#endif // BITCOIN_SCRIPT_ISMINE_H
+#endif // TELECHAIN_SCRIPT_ISMINE_H

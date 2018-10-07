@@ -2,8 +2,8 @@
 // Distributed under the GPL3 software license, see the accompanying
 // file COPYING or http://www.gnu.org/licenses/gpl.html.
 
-#ifndef BITCOIN_CRYPTO_COMMON_H
-#define BITCOIN_CRYPTO_COMMON_H
+#ifndef TELECHAIN_CRYPTO_COMMON_H
+#define TELECHAIN_CRYPTO_COMMON_H
 
 #if defined(HAVE_CONFIG_H)
 #include "bitcoin-config.h"
@@ -79,4 +79,4 @@ void static inline WriteBE64(unsigned char* ptr, uint64_t x)
     memcpy(ptr, (char*)&v, 8);
 }
 
-#endif // BITCOIN_CRYPTO_COMMON_H
+#endif // TELECHAIN_CRYPTO_COMMON_H

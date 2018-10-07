@@ -1,0 +1,92 @@
+#!/sbin/runscript
+
+# backward compatibility for existing gentoo layout 
+#
+if [ -d "/var/lib/bitcoin/.bitcoin" ]; then
+	TELECHAIND_DEFAULT_DATADIR="/var/lib/bitcoin/.bitcoin"
+else
+	TELECHAIND_DEFAULT_DATADIR="/var/lib/telechaind"
+fi
+
+TELECHAIND_CONFIGFILE=${TELECHAIND_CONFIGFILE:-/etc/bitcoin/bitcoin.conf}
+TELECHAIND_PIDDIR=${TELECHAIND_PIDDIR:-/var/run/telechaind}
+TELECHAIND_PIDFILE=${TELECHAIND_PIDFILE:-${TELECHAIND_PIDDIR}/telechaind.pid}
+TELECHAIND_DATADIR=${TELECHAIND_DATADIR:-${TELECHAIND_DEFAULT_DATADIR}}
+TELECHAIND_USER=${TELECHAIND_USER:-${TELECHAIN_USER:-bitcoin}}
+TELECHAIND_GROUP=${TELECHAIND_GROUP:-bitcoin}
+TELECHAIND_BIN=${TELECHAIND_BIN:-/usr/bin/telechaind}
+TELECHAIND_NICE=${TELECHAIND_NICE:-${NICELEVEL:-0}}
+TELECHAIND_OPTS="${TELECHAIND_OPTS:-${TELECHAIN_OPTS}}"
+
+name="Bitcoin Core Daemon"
+description="Bitcoin cryptocurrency P2P network daemon"
+
+command="/usr/bin/telechaind"
+command_args="-pid=\"${TELECHAIND_PIDFILE}\" \
+		-conf=\"${TELECHAIND_CONFIGFILE}\" \
+		-datadir=\"${TELECHAIND_DATADIR}\" \
+		-daemon \
+		${TELECHAIND_OPTS}"
+
+required_files="${TELECHAIND_CONFIGFILE}"
+start_stop_daemon_args="-u ${TELECHAIND_USER} \
+			-N ${TELECHAIND_NICE} -w 2000"
+pidfile="${TELECHAIND_PIDFILE}"
+
+# The retry schedule to use when stopping the daemon. Could be either
+# a timeout in seconds or multiple signal/timeout pairs (like
+# "SIGKILL/180 SIGTERM/300")
+retry="${TELECHAIND_SIGTERM_TIMEOUT}"
+
+depend() {
+	need localmount net
+}
+
+# verify
+# 1) that the datadir exists and is writable (or create it)
+# 2) that a directory for the pid exists and is writable
+# 3) ownership and permissions on the config file
+start_pre() {
+	checkpath \
+	-d \
+	--mode 0750 \
+	--owner "${TELECHAIND_USER}:${TELECHAIND_GROUP}" \
+	"${TELECHAIND_DATADIR}"
+
+	checkpath \
+	-d \
+	--mode 0755 \
+	--owner "${TELECHAIND_USER}:${TELECHAIND_GROUP}" \
+	"${TELECHAIND_PIDDIR}"
+
+	checkpath -f \
+	-o ${TELECHAIND_USER}:${TELECHAIND_GROUP} \
+	-m 0660 \
+	${TELECHAIND_CONFIGFILE}
+
+	checkconfig || return 1
+}
+
+checkconfig()
+{
+	if ! grep -qs '^rpcpassword=' "${TELECHAIND_CONFIGFILE}" ; then
+		eerror ""
+		eerror "ERROR: You must set a secure rpcpassword to run telechaind."
+		eerror "The setting must appear in ${TELECHAIND_CONFIGFILE}"
+		eerror ""
+		eerror "This password is security critical to securing wallets "
+		eerror "and must not be the same as the rpcuser setting."
+		eerror "You can generate a suitable random password using the following"
+		eerror "command from the shell:"
+		eerror ""
+		eerror "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+		eerror ""
+		eerror "It is also recommended that you also set alertnotify so you are "
+		eerror "notified of problems:"
+		eerror ""
+		eerror "ie: alertnotify=echo %%s | mail -s \"Bitcoin Alert\"" \
+			"admin@foo.com"
+		eerror ""
+		return 1
+	fi
+}

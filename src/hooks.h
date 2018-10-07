@@ -2,8 +2,8 @@
 // Distributed under the GPL3 software license, see the accompanying
 // file license.txt or http://www.gnu.org/licenses/gpl.html.
 
-#ifndef BITCOIN_HOOKS_H
-#define BITCOIN_HOOKS_H
+#ifndef TELECHAIN_HOOKS_H
+#define TELECHAIN_HOOKS_H
 
 class CBlockIndex;
 class CDiskTxPos;

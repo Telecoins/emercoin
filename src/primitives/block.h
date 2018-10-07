@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_PRIMITIVES_BLOCK_H
-#define BITCOIN_PRIMITIVES_BLOCK_H
+#ifndef TELECHAIN_PRIMITIVES_BLOCK_H
+#define TELECHAIN_PRIMITIVES_BLOCK_H
 
 #include "primitives/transaction.h"
 #include "serialize.h"
@@ -264,4 +264,4 @@ int64_t GetBlockWeight(const CBlock& tx);
 bool IsProtocolV03(unsigned int nTimeCoinStake);
 bool IsProtocolV04(unsigned int nTimeBlock);
 
-#endif // BITCOIN_PRIMITIVES_BLOCK_H
+#endif // TELECHAIN_PRIMITIVES_BLOCK_H

@@ -5,11 +5,11 @@
 /**
  * Utility functions shared by unit tests
  */
-#ifndef BITCOIN_TEST_TESTUTIL_H
-#define BITCOIN_TEST_TESTUTIL_H
+#ifndef TELECHAIN_TEST_TESTUTIL_H
+#define TELECHAIN_TEST_TESTUTIL_H
 
 #include <boost/filesystem/path.hpp>
 
 boost::filesystem::path GetTempPath();
 
-#endif // BITCOIN_TEST_TESTUTIL_H
+#endif // TELECHAIN_TEST_TESTUTIL_H

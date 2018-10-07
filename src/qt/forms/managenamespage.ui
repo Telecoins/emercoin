@@ -38,7 +38,7 @@
         <string>DNS...</string>
        </property>
        <property name="icon">
-        <iconset resource="../bitcoin.qrc">
+        <iconset resource="../telechain.qrc">
          <normaloff>:/icons/dDNS-32.png</normaloff>:/icons/dDNS-32.png</iconset>
        </property>
       </widget>
@@ -52,7 +52,7 @@
         <string>DPO...</string>
        </property>
        <property name="icon">
-        <iconset resource="../bitcoin.qrc">
+        <iconset resource="../telechain.qrc">
          <normaloff>:/icons/DPO-32.png</normaloff>:/icons/DPO-32.png</iconset>
        </property>
       </widget>
@@ -197,7 +197,7 @@
           <string>import...</string>
          </property>
          <property name="icon">
-          <iconset resource="../bitcoin.qrc">
+          <iconset resource="../telechain.qrc">
            <normaloff>:/icons/open</normaloff>:/icons/open</iconset>
          </property>
         </widget>
@@ -283,7 +283,7 @@
         <string>&amp;Submit</string>
        </property>
        <property name="icon">
-        <iconset resource="../bitcoin.qrc">
+        <iconset resource="../telechain.qrc">
          <normaloff>:/icons/send</normaloff>:/icons/send</iconset>
        </property>
        <property name="default">
@@ -453,7 +453,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../bitcoin.qrc"/>
+  <include location="../telechain.qrc"/>
  </resources>
  <connections/>
 </ui>

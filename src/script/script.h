@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_SCRIPT_SCRIPT_H
-#define BITCOIN_SCRIPT_SCRIPT_H
+#ifndef TELECHAIN_SCRIPT_SCRIPT_H
+#define TELECHAIN_SCRIPT_SCRIPT_H
 
 #include "crypto/common.h"
 #include "prevector.h"
@@ -706,4 +706,4 @@ bool DecodeNameScript(const CScript& script, NameTxInfo& ret, CScript::const_ite
 bool DecodeNameScript(const CScript& script, NameTxInfo& ret);
 bool RemoveNameScriptPrefix(const CScript& scriptIn, CScript& scriptOut);
 
-#endif // BITCOIN_SCRIPT_SCRIPT_H
+#endif // TELECHAIN_SCRIPT_SCRIPT_H

@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_SCRIPT_STANDARD_H
-#define BITCOIN_SCRIPT_STANDARD_H
+#ifndef TELECHAIN_SCRIPT_STANDARD_H
+#define TELECHAIN_SCRIPT_STANDARD_H
 
 #include "script/interpreter.h"
 #include "uint256.h"
@@ -89,4 +89,4 @@ CScript GetScriptForWitness(const CScript& redeemscript);
 
 CScript GenerateScriptForRandPay(const CScript& scriptPubKey);
 
-#endif // BITCOIN_SCRIPT_STANDARD_H
+#endif // TELECHAIN_SCRIPT_STANDARD_H

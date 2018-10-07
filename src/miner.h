@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_MINER_H
-#define BITCOIN_MINER_H
+#ifndef TELECHAIN_MINER_H
+#define TELECHAIN_MINER_H
 
 #include "primitives/block.h"
 #include "txmempool.h"
@@ -227,4 +227,4 @@ void MintStake(boost::thread_group& threadGroup, CWallet* pwallet);
 /** Run the miner threads */
 void GenerateTelechains(bool fGenerate, int nThreads, const CChainParams& chainparams);
 
-#endif // BITCOIN_MINER_H
+#endif // TELECHAIN_MINER_H

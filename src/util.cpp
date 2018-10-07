@@ -104,8 +104,8 @@ namespace boost {
 
 using namespace std;
 
-const char * const BITCOIN_CONF_FILENAME = "telechain.conf";
-const char * const BITCOIN_PID_FILENAME = "telechaind.pid";
+const char * const TELECHAIN_CONF_FILENAME = "telechain.conf";
+const char * const TELECHAIN_PID_FILENAME = "telechaind.pid";
 
 CCriticalSection cs_args;
 map<string, string> mapArgs;
@@ -492,7 +492,7 @@ boost::filesystem::path GetDefaultDataDir()
     return GetSpecialFolderPath(CSIDL_APPDATA) / "Telechain";
 #else
     struct passwd *pw_ptr = getpwuid(geteuid());
-    const char *pszHome = pw_ptr? pw_ptr->pw_dir : getenv("HOME"); 
+    const char *pszHome = pw_ptr? pw_ptr->pw_dir : getenv("HOME");
     fs::path pathRet((pszHome == NULL || *pszHome == 0)? "/" : pszHome);
 #ifdef MAC_OSX
     // Mac
@@ -589,7 +589,7 @@ void ReadConfigFile(const std::string& confPath)
 #ifndef WIN32
 boost::filesystem::path GetPidFile()
 {
-    boost::filesystem::path pathPidFile(GetArg("-pid", BITCOIN_PID_FILENAME));
+    boost::filesystem::path pathPidFile(GetArg("-pid", TELECHAIN_PID_FILENAME));
     if (!pathPidFile.is_complete()) pathPidFile = GetDataDir() / pathPidFile;
     return pathPidFile;
 }

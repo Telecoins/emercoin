@@ -1,0 +1,33 @@
+# /etc/conf.d/telechaind: config file for /etc/init.d/telechaind
+
+# Config file location
+#TELECHAIND_CONFIGFILE="/etc/bitcoin/bitcoin.conf"
+
+# What directory to write pidfile to?  (created and owned by $TELECHAIND_USER)
+#TELECHAIND_PIDDIR="/var/run/telechaind"
+
+# What filename to give the pidfile
+#TELECHAIND_PIDFILE="${TELECHAIND_PIDDIR}/telechaind.pid"
+
+# Where to write telechaind data (be mindful that the blockchain is large)
+#TELECHAIND_DATADIR="/var/lib/telechaind"
+
+# User and group to own telechaind process
+#TELECHAIND_USER="bitcoin"
+#TELECHAIND_GROUP="bitcoin"
+
+# Path to telechaind executable
+#TELECHAIND_BIN="/usr/bin/telechaind"
+
+# Nice value to run telechaind under
+#TELECHAIND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+TELECHAIND_OPTS="-disablewallet"
+
+# The timeout in seconds OpenRC will wait for telechaind to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+TELECHAIND_SIGTERM_TIMEOUT=60

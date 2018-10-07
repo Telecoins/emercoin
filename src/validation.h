@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_VALIDATION_H
-#define BITCOIN_VALIDATION_H
+#ifndef TELECHAIN_VALIDATION_H
+#define TELECHAIN_VALIDATION_H
 
 #if defined(HAVE_CONFIG_H)
 #include "config/bitcoin-config.h"
@@ -589,4 +589,4 @@ bool CheckBlockSignature(const CBlock& block, bool fV7Enabled);
 bool CheckMinTxOut(const CTransactionRef& tx);
 bool CheckMinTxOut(const CBlock& block, bool fV7Enabled);
 
-#endif // BITCOIN_VALIDATION_H
+#endif // TELECHAIN_VALIDATION_H

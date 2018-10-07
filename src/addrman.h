@@ -3,8 +3,8 @@
 // Distributed under the GPL3 software license, see the accompanying
 // file COPYING or http://www.gnu.org/licenses/gpl.html.
 
-#ifndef BITCOIN_ADDRMAN_H
-#define BITCOIN_ADDRMAN_H
+#ifndef TELECHAIN_ADDRMAN_H
+#define TELECHAIN_ADDRMAN_H
 
 #include "netaddress.h"
 #include "protocol.h"
@@ -591,4 +591,4 @@ public:
 
 };
 
-#endif // BITCOIN_ADDRMAN_H
+#endif // TELECHAIN_ADDRMAN_H

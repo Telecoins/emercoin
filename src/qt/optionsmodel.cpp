@@ -8,7 +8,7 @@
 
 #include "optionsmodel.h"
 
-#include "bitcoinunits.h"
+#include "telechainunits.h"
 #include "guiutil.h"
 
 #include "amount.h"

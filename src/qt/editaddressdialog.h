@@ -2,8 +2,8 @@
 // Distributed under the GPL3 software license, see the accompanying
 // file COPYING or http://www.gnu.org/licenses/gpl.html.
 
-#ifndef BITCOIN_QT_EDITADDRESSDIALOG_H
-#define BITCOIN_QT_EDITADDRESSDIALOG_H
+#ifndef TELECHAIN_QT_EDITADDRESSDIALOG_H
+#define TELECHAIN_QT_EDITADDRESSDIALOG_H
 
 #include <QDialog>
 
@@ -54,4 +54,4 @@ private:
     QString address;
 };
 
-#endif // BITCOIN_QT_EDITADDRESSDIALOG_H
+#endif // TELECHAIN_QT_EDITADDRESSDIALOG_H

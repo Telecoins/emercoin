@@ -4,8 +4,8 @@
 // Copyright (c) 2018-2018 The Telechain developers
 // Distributed under the GPL3 software license, see the accompanying
 // file COPYING or http://www.gnu.org/licenses/gpl.html.
-#ifndef BITCOIN_BIGNUM_H
-#define BITCOIN_BIGNUM_H
+#ifndef TELECHAIN_BIGNUM_H
+#define TELECHAIN_BIGNUM_H
 
 #include <stdexcept>
 #include <vector>

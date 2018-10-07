@@ -12,7 +12,7 @@
 #include "platformstyle.h"
 #include "walletmodel.h"
 #include "../namecoin.h"
-#include "bitcoinunits.h"
+#include "telechainunits.h"
 #include <QStandardItemModel>
 
 #include <QApplication>
