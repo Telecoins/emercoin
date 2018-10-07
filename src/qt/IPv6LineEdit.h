@@ -1,4 +1,4 @@
-﻿//IPv6LineEdit.h by emercoin developers
+﻿//IPv6LineEdit.h by telechain developers
 #pragma once
 
 class IPv6LineEdit {

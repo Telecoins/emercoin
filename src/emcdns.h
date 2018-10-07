@@ -1,5 +1,5 @@
-#ifndef EMCDNS_H
-#define EMCDNS_H
+#ifndef TLCDNS_H
+#define TLCDNS_H
 
 #include <string>
 #include <map>
@@ -13,10 +13,10 @@ using namespace std;
 #include "pubkey.h"
 
 
-#define EMCDNS_PORT		5335
-#define EMCDNS_DAPBLOOMSTEP	3				// 3 steps in bloom filter
-#define EMCDNS_DAPSHIFTDECAY	8				// Dap time shift 8 = 256 secs (~4min) in decay
-#define EMCDNS_DAPTRESHOLD	(4 << EMCDNS_DAPSHIFTDECAY)	// ~4r/s found name, ~1 r/s - clien IP
+#define TLCDNS_PORT		5335
+#define TLCDNS_DAPBLOOMSTEP	3				// 3 steps in bloom filter
+#define TLCDNS_DAPSHIFTDECAY	8				// Dap time shift 8 = 256 secs (~4min) in decay
+#define TLCDNS_DAPTRESHOLD	(4 << TLCDNS_DAPSHIFTDECAY)	// ~4r/s found name, ~1 r/s - clien IP
 
 #define VERMASK_NEW	-1
 #define VERMASK_BLOCKED -2
@@ -66,15 +66,15 @@ struct TollFree {
     vector<string>		e2u;
 };
 
-class EmcDns {
+class TlcDns {
   public:
-     EmcDns(const char *bind_ip, uint16_t port_no,
-	    const char *gw_suffix, const char *allowed_suff, 
-	    const char *local_fname, 
+     TlcDns(const char *bind_ip, uint16_t port_no,
+	    const char *gw_suffix, const char *allowed_suff,
+	    const char *local_fname,
 	    uint32_t dapsize, uint32_t daptreshold,
-	    const char *enums, const char *tollfree, 
+	    const char *enums, const char *tollfree,
 	    uint8_t verbose);
-    ~EmcDns();
+    ~TlcDns();
 
     void Run();
 
@@ -130,7 +130,6 @@ class EmcDns {
     boost::thread m_thread;
     map<string, Verifier> m_verifiers;
     vector<TollFree>      m_tollfree;
-}; // class EmcDns
+}; // class TlcDns
 
-#endif // EMCDNS_H
-
+#endif // TLCDNS_H

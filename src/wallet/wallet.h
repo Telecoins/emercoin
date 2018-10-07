@@ -57,7 +57,7 @@ static const CAmount DEFAULT_TRANSACTION_FEE = MIN_TX_FEE / 10; // per 1kb
 //! -fallbackfee default
 static const CAmount DEFAULT_FALLBACK_FEE = MIN_TX_FEE / 10;
 //! minimum recommended increment for BIP 125 replacement txs
-static const CAmount WALLET_INCREMENTAL_RELAY_FEE = 5 * (MIN_TX_FEE / 10); // emercoin: this value was changed by analogy. Most other fees were 1000, this one was 5000.
+static const CAmount WALLET_INCREMENTAL_RELAY_FEE = 5 * (MIN_TX_FEE / 10); // telechain: this value was changed by analogy. Most other fees were 1000, this one was 5000.
 //! target minimum change amount
 static const CAmount MIN_CHANGE = 2*MIN_TXOUT_AMOUNT;
 //! final minimum change amount after paying for fees

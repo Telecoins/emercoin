@@ -142,8 +142,8 @@
         <translation>Deschide &amp;URI...</translation>
     </message>
     <message>
-        <source>Send coins to a Emercoin address</source>
-        <translation>Trimite monedele către o adresă Emercoin</translation>
+        <source>Send coins to a Telechain address</source>
+        <translation>Trimite monedele către o adresă Telechain</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -166,8 +166,8 @@
         <translation>&amp;Verifică mesajul...</translation>
     </message>
     <message>
-        <source>Emercoin</source>
-        <translation>Emercoin</translation>
+        <source>Telechain</source>
+        <translation>Telechain</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -194,12 +194,12 @@
         <translation>Criptează cheile private care aparțin portofelului tău.</translation>
     </message>
     <message>
-        <source>Sign messages with your Emercoin addresses to prove you own them</source>
-        <translation>Semnează mesajele cu adresa ta de Emercoin pentru a face dovada că îți aparțin.</translation>
+        <source>Sign messages with your Telechain addresses to prove you own them</source>
+        <translation>Semnează mesajele cu adresa ta de Telechain pentru a face dovada că îți aparțin.</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Emercoin addresses</source>
-        <translation>Verifică mesajele cu scopul de a asigura faptul că au fost semnate cu adresa de Emercoin specificată.</translation>
+        <source>Verify messages to ensure they were signed with specified Telechain addresses</source>
+        <translation>Verifică mesajele cu scopul de a asigura faptul că au fost semnate cu adresa de Telechain specificată.</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -214,12 +214,12 @@
         <translation>&amp;Ajutor</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and emercoin: URIs)</source>
-        <translation>Cerere plată (generează coduri QR și emercoin: URIs)</translation>
+        <source>Request payments (generates QR codes and telechain: URIs)</source>
+        <translation>Cerere plată (generează coduri QR și telechain: URIs)</translation>
     </message>
     <message>
-        <source>Open a emercoin: URI or payment request</source>
-        <translation>Deschide un emercoin: URI sau cerere de plată</translation>
+        <source>Open a telechain: URI or payment request</source>
+        <translation>Deschide un telechain: URI sau cerere de plată</translation>
     </message>
     <message>
         <source>%1 behind</source>
@@ -748,8 +748,8 @@
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Emercoin Core</source>
-        <translation>Emercoin Core</translation>
+        <source>Telechain Core</source>
+        <translation>Telechain Core</translation>
     </message>
     <message>
         <source>Information</source>

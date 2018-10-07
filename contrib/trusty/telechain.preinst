@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+. /usr/share/debconf/confmodule
+
+case "$1" in
+  install)
+    getent passwd tlc >/dev/null || {
+      groupadd -r tlc && useradd -r -m -d /var/lib/tlc -k /dev/null -s /bin/false -g tlc tlc
+    }
+    [ ! -f /etc/ssl/tlc/telechain.key ] || [ ! -f /etc/ssl/tlc/telechain.crt ] && {
+      mkdir -p /etc/ssl/tlc
+      openssl req -nodes -x509 -newkey rsa:4096 -keyout /etc/ssl/tlc/telechain.key -out /etc/ssl/tlc/telechain.crt -days 3560 -subj /C=CY/L=Nicosia/O=Telechain/CN=telechain.local >/dev/null 2>&1
+      chown tlc.tlc /etc/ssl/tlc/telechain.key /etc/ssl/tlc/telechain.crt
+      chmod 600 /etc/ssl/tlc/telechain.key
+    }
+    touch /var/tmp/telechain-install.flag
+  ;;
+esac
+
+exit 0

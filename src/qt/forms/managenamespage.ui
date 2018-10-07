@@ -32,14 +32,14 @@
      <item>
       <widget class="QPushButton" name="btnManageDomains">
        <property name="toolTip">
-        <string>Host your domains in EmerDNS system</string>
+        <string>Host your domains in dDNS system</string>
        </property>
        <property name="text">
         <string>DNS...</string>
        </property>
        <property name="icon">
         <iconset resource="../bitcoin.qrc">
-         <normaloff>:/icons/EmerDNS-32.png</normaloff>:/icons/EmerDNS-32.png</iconset>
+         <normaloff>:/icons/dDNS-32.png</normaloff>:/icons/dDNS-32.png</iconset>
        </property>
       </widget>
      </item>
@@ -385,7 +385,7 @@
           </sizepolicy>
          </property>
          <property name="toolTip">
-          <string>Enter Emercoin address (or prefix of it)</string>
+          <string>Enter Telechain address (or prefix of it)</string>
          </property>
          <property name="text">
           <string notr="true"/>

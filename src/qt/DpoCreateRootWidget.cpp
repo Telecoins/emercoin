@@ -1,4 +1,4 @@
-﻿//DpoCreateRootWidget.cpp by Emercoin developers
+﻿//DpoCreateRootWidget.cpp by Telechain developers
 #include "DpoCreateRootWidget.h"
 #include "EmailLineEdit.h"
 #include "PhoneNumberLineEdit.h"

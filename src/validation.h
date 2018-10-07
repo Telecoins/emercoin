@@ -216,13 +216,13 @@ static const unsigned int DEFAULT_CHECKLEVEL = 3;
 // Setting the target to > than 550MB will make it likely we can respect the target.
 static const uint64_t MIN_DISK_SPACE_FOR_BLOCK_FILES = 550 * 1024 * 1024;
 
-/** emercoin values */
+/** telechain values */
 static const CAmount MAX_MINT_PROOF_OF_WORK = 5020 * COIN;
 static const int64_t nMaxClockDrift = 2 * 60 * 60;       // two hours
 extern std::map<uint256, std::shared_ptr<CAuxPow>> mapDirtyAuxPow;
 extern int64_t nLastCoinStakeSearchInterval;
 
-/** 
+/**
  * Process an incoming block. This only returns after the best known valid
  * block is made active. Note that it does not, however, guarantee that the
  * specific block passed to it has been checked for validity!
@@ -233,7 +233,7 @@ extern int64_t nLastCoinStakeSearchInterval;
  *
  * Note that we guarantee that either the proof-of-work is valid on pblock, or
  * (and possibly also) BlockChecked will have been called.
- * 
+ *
  * Call without cs_main held.
  *
  * @param[in]   pblock  The block we want to process.
@@ -290,7 +290,7 @@ bool GetTransaction(const CDiskTxPos& postx, CTransactionRef &txOut);
 /** Find the best known block, and make it the tip of the block chain */
 bool ActivateBestChain(CValidationState& state, const CChainParams& chainparams, std::shared_ptr<const CBlock> pblock = std::shared_ptr<const CBlock>());
 
-// emercoin: reward for blocks
+// telechain: reward for blocks
 CAmount GetProofOfWorkReward(unsigned int nBits, bool fV7Enabled);
 
 /** Guess verification progress (as a fraction between 0.0=genesis and 1.0=current tip). */
@@ -346,7 +346,7 @@ bool AcceptToMemoryPoolWithTime(CTxMemPool& pool, CValidationState &state, const
 /** Convert CValidationState to a human-readable message for logging */
 std::string FormatStateMessage(const CValidationState &state);
 
-/** 
+/**
  * Count ECDSA signature operations the old-fashioned (pre-0.6) way
  * @return number of sigops this transaction's outputs will produce when spent
  * @see CTransaction::FetchInputs
@@ -355,7 +355,7 @@ unsigned int GetLegacySigOpCount(const CTransaction& tx);
 
 /**
  * Count ECDSA signature operations in pay-to-script-hash inputs.
- * 
+ *
  * @param[in] mapInputs Map of previous transactions that have outputs we're spending
  * @return maximum number of sigops required to validate this transaction's inputs
  * @see CTransaction::FetchInputs
@@ -439,7 +439,7 @@ bool CheckSequenceLocks(const CTransaction &tx, int flags, LockPoints* lp = NULL
 
 /**
  * Closure representing one script verification
- * Note that this stores references to the spending transaction 
+ * Note that this stores references to the spending transaction
  */
 class CScriptCheck
 {
@@ -581,11 +581,11 @@ void DumpMempool();
 bool LoadMempool();
 
 // ppcoin:
-bool GetEmc7POSReward(const CTransaction& tx, const CCoinsViewCache &view, CAmount &nReward);
+bool GetTlc7POSReward(const CTransaction& tx, const CCoinsViewCache &view, CAmount &nReward);
 bool SignBlock(CBlock& block, const CKeyStore& keystore);
 bool CheckBlockSignature(const CBlock& block, bool fV7Enabled);
 
-// emercoin: check that tx output is not below MIN_TX_AMOUNT
+// telechain: check that tx output is not below MIN_TX_AMOUNT
 bool CheckMinTxOut(const CTransactionRef& tx);
 bool CheckMinTxOut(const CBlock& block, bool fV7Enabled);
 

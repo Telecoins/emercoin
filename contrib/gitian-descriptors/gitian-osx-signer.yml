@@ -1,5 +1,5 @@
 ---
-name: "emercoin-dmg-signer"
+name: "telechain-dmg-signer"
 suites:
 - "trusty"
 architectures:

@@ -1181,7 +1181,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         return true;
     }
 
-    // emercoin: set deserialization mode to read PoS flag in headers
+    // telechain: set deserialization mode to read PoS flag in headers
     // serialization mode to encode PoS flags is set in CSerializedNetMsg Make()
     vRecv.SetType(vRecv.GetType() | SER_POSMARKER);
 
@@ -1833,7 +1833,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         std::list<CTransactionRef> lRemovedTxn;
 
         if (!AlreadyHave(inv) && AcceptToMemoryPool(mempool, state, ptx, &fMissingInputs, &lRemovedTxn)) {
-            // emercoin: raise temerature for this peer
+            // telechain: raise temerature for this peer
             pfrom->temperature  += (int32_t)::GetVirtualTransactionSize(*ptx);
 
             mempool.check(pcoinsTip);

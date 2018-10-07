@@ -1,4 +1,4 @@
-﻿//DpoCreateRootWidget.h by Emercoin developers
+﻿//DpoCreateRootWidget.h by Telechain developers
 #pragma once
 #include "NameValueLineEdits.h"
 #include <QScrollArea>

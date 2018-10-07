@@ -1,4 +1,4 @@
-﻿//EmailLineEdit.h by Emercoin developers
+﻿//EmailLineEdit.h by Telechain developers
 #pragma once
 #include "EmailValidator.h"
 #include <QLineEdit>

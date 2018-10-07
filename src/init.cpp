@@ -42,7 +42,7 @@
 #include "wallet/wallet.h"
 #endif
 #include "warnings.h"
-#include "emcdns.h"
+#include "tlcdns.h"
 #include "hooks.h"
 
 #include <stdint.h>
@@ -76,7 +76,7 @@ static const bool DEFAULT_STOPAFTERBLOCKIMPORT = false;
 
 std::unique_ptr<CConnman> g_connman;
 std::unique_ptr<PeerLogicValidation> peerLogic;
-EmcDns* emcdns = NULL;
+TlcDns* tlcdns = NULL;
 
 #if ENABLE_ZMQ
 static CZMQNotificationInterface* pzmqNotificationInterface = NULL;
@@ -186,8 +186,8 @@ void Interrupt(boost::thread_group& threadGroup)
 void Shutdown()
 {
     LogPrintf("%s: In progress...\n", __func__);
-    if (emcdns)
-        delete emcdns;
+    if (tlcdns)
+        delete tlcdns;
     static CCriticalSection cs_Shutdown;
     TRY_LOCK(cs_Shutdown, lockShutdown);
     if (!lockShutdown)
@@ -197,10 +197,10 @@ void Shutdown()
     /// for example if the data directory was found to be locked.
     /// Be sure that anything that writes files or flushes caches only does this if the respective
     /// module was initialized.
-    RenameThread("emercoin-shutoff");
+    RenameThread("telechain-shutoff");
     mempool.AddTransactionsUpdated(1);
 
-    GenerateEmercoins(false, 0, Params());
+    GenerateTelechains(false, 0, Params());
     StopHTTPRPC();
     StopREST();
     StopRPC();
@@ -359,7 +359,7 @@ std::string HelpMessage(HelpMessageMode mode)
 #ifndef WIN32
     strUsage += HelpMessageOpt("-pid=<file>", strprintf(_("Specify pid file (default: %s)"), BITCOIN_PID_FILENAME));
 #endif
-// emc - disabled until correctly implemented
+// tlc - disabled until correctly implemented
 //    strUsage += HelpMessageOpt("-prune=<n>", strprintf(_("Reduce storage requirements by enabling pruning (deleting) of old blocks. This allows the pruneblockchain RPC to be called to delete specific blocks, and enables automatic pruning of old blocks if a target size in MiB is provided. This mode is incompatible with -txindex and -rescan. "
 //            "Warning: Reverting this setting requires re-downloading the entire blockchain. "
 //            "(default: 0 = disable pruning blocks, 1 = allow manual pruning via RPC, >%u = automatically prune block files to stay under the specified target size in MiB)"), MIN_DISK_SPACE_FOR_BLOCK_FILES / 1024 / 1024));
@@ -516,8 +516,8 @@ std::string HelpMessage(HelpMessageMode mode)
 
 std::string LicenseInfo()
 {
-    const std::string URL_SOURCE_CODE = "<https://github.com/Emercoin/emercoin>";
-    const std::string URL_WEBSITE = "<https://emercoin.com>";
+    const std::string URL_SOURCE_CODE = "<https://github.com/telecoins/telechain>";
+    const std::string URL_WEBSITE = "<https://telechain.io>";
 
     return CopyrightHolders(strprintf(_("Copyright (C) %i-%i"), 2009, COPYRIGHT_YEAR) + " ") + "\n" +
            "\n" +
@@ -620,7 +620,7 @@ void CleanupBlockRevFiles()
 void ThreadImport(std::vector<boost::filesystem::path> vImportFiles)
 {
     const CChainParams& chainparams = Params();
-    RenameThread("emercoin-loadblk");
+    RenameThread("telechain-loadblk");
 
     {
     CImportingNow imp;
@@ -798,7 +798,7 @@ void InitLogging()
     fLogIPs = GetBoolArg("-logips", DEFAULT_LOGIPS);
 
     LogPrintf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-    LogPrintf("Emercoin version %s\n", FormatFullVersion());
+    LogPrintf("Telechain version %s\n", FormatFullVersion());
 }
 
 namespace { // Variables internal to initialization process only
@@ -897,10 +897,10 @@ bool AppInitParameterInteraction()
 
     // if using block pruning, then disallow txindex
     if (GetArg("-prune", 0)) {
-// emc - disabled until correctly implemented
+// tlc - disabled until correctly implemented
 //        if (GetBoolArg("-txindex", DEFAULT_TXINDEX))
 //            return InitError(_("Prune mode is incompatible with -txindex."));
-        return InitError(_("Prune mode is disabled in emercoin."));
+        return InitError(_("Prune mode is disabled in telechain."));
     }
 
     // Make sure enough file descriptors are available
@@ -988,7 +988,7 @@ bool AppInitParameterInteraction()
         nScriptCheckThreads = MAX_SCRIPTCHECK_THREADS;
 
     // block pruning; get the amount of disk space (in MiB) to allot for block & undo files
-    // emc - disabled until correctly implemented
+    // tlc - disabled until correctly implemented
     // int64_t nPruneArg = GetArg("-prune", 0);
     int64_t nPruneArg = 0;
     if (nPruneArg < 0) {
@@ -1127,7 +1127,7 @@ bool AppInitSanityChecks()
     ECC_Start();
     globalVerifyHandle.reset(new ECCVerifyHandle());
 
-    // emercoin: moved here because ECC need to be initialized to execute this
+    // telechain: moved here because ECC need to be initialized to execute this
     if (IsArgSet("-checkpointkey")) // ppcoin: checkpoint master priv key
     {
         if (!CheckpointsSync::SetCheckpointPrivKey(GetArg("-checkpointkey", "")))
@@ -1201,7 +1201,7 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
             return InitError(_("Unable to start HTTP server. See debug log for details."));
     }
 
-    // emercoin: allow user to set checkpoint pubkey
+    // telechain: allow user to set checkpoint pubkey
     string ck = GetArg("-checkpointpubkey", "1");
     if (ck == "1")
     {
@@ -1430,7 +1430,7 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
     LogPrintf("* Using %.1fMiB for in-memory UTXO set (plus up to %.1fMiB of unused mempool space)\n", nCoinCacheUsage * (1.0 / 1024 / 1024), nMempoolSizeMax * (1.0 / 1024 / 1024));
 
     bool fLoaded = false;
-    int fAuxReindex = 0;   // emercoin: used when upgrading pre-auxpow blockindex
+    int fAuxReindex = 0;   // telechain: used when upgrading pre-auxpow blockindex
     while (!fLoaded) {
         bool fReset = fReindex;
         std::string strLoadError;
@@ -1543,7 +1543,7 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
         if (!fLoaded) {
             // first suggest a reindex
             if (!fReset) {
-                // emercoin: try to reindex if no auxpow flag
+                // telechain: try to reindex if no auxpow flag
                 bool fAuxPow;
                 if (fAuxReindex == 1 && (!pblocktree->ReadFlag("auxpow2", fAuxPow) || !fAuxPow))
                 {
@@ -1585,14 +1585,14 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
     if (!boost::filesystem::exists(GetDataDir() / "nameindex"))
         boost::filesystem::create_directory(GetDataDir() / "nameindex");
 
-    // emercoin: check if indexes need to be created or recreated
+    // telechain: check if indexes need to be created or recreated
     // we should have block index fully loaded by now
     boost::filesystem::path pathNameIndex = GetDataDir() / "nameindex" / "nameindexV2.dat";
     boost::filesystem::path pathNameAddress = GetDataDir() / "nameindex" / "nameaddress.dat";
     extern bool createNameIndexes();
     if (!boost::filesystem::exists(pathNameIndex))
     {
-        // emercoin: remove secondary index if we are re-creating first one (both will be re-created)
+        // telechain: remove secondary index if we are re-creating first one (both will be re-created)
         if (boost::filesystem::exists(pathNameAddress))
             boost::filesystem::remove(pathNameAddress);
 
@@ -1604,7 +1604,7 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
         }
     }
 
-    // emercoin: recreate secondary (address -> name) index if it was deleted
+    // telechain: recreate secondary (address -> name) index if it was deleted
     // it should only be created if primary index already exists
     extern bool createNameAddressFile();
     if (!boost::filesystem::exists(GetDataDir() / "nameindex" / "nameaddress.dat") && !createNameAddressFile())
@@ -1726,24 +1726,24 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
         MintStake(threadGroup, pwalletMain);
 #endif
     // Generate coins in the background
-    GenerateEmercoins(GetBoolArg("-gen", DEFAULT_GENERATE), GetArg("-genproclimit", DEFAULT_GENERATE_THREADS), chainparams);
+    GenerateTelechains(GetBoolArg("-gen", DEFAULT_GENERATE), GetArg("-genproclimit", DEFAULT_GENERATE_THREADS), chainparams);
 
-    // init emcdns. WARNING: this should be done after hooks initialization
-    if (GetBoolArg("-emcdns", false))
+    // init tlcdns. WARNING: this should be done after hooks initialization
+    if (GetBoolArg("-tlcdns", false))
     {
-        int port = GetArg("-emcdnsport", EMCDNS_PORT);
-        int verbose = GetArg("-emcdnsverbose", 1);
+        int port = GetArg("-tlcdnsport", TLCDNS_PORT);
+        int verbose = GetArg("-tlcdnsverbose", 1);
         if (port <= 0)
-            port = EMCDNS_PORT;
-        string suffix  = GetArg("-emcdnssuffix", "");
-        string bind_ip = GetArg("-emcdnsbindip", "");
-        string allowed = GetArg("-emcdnsallowed", "");
-        string localcf = GetArg("-emcdnslocalcf", "");
+            port = TLCDNS_PORT;
+        string suffix  = GetArg("-tlcdnssuffix", "");
+        string bind_ip = GetArg("-tlcdnsbindip", "");
+        string allowed = GetArg("-tlcdnsallowed", "");
+        string localcf = GetArg("-tlcdnslocalcf", "");
         string enums   = GetArg("-enumtrust", "");
         string tf      = GetArg("-enumtollfree", "");
 	uint32_t dapzs = GetArg("-dapsize", 0);
-	uint32_t dapth = GetArg("-daptreshold", EMCDNS_DAPTRESHOLD);
-        emcdns = new EmcDns(bind_ip.c_str(), port,
+	uint32_t dapth = GetArg("-daptreshold", TLCDNS_DAPTRESHOLD);
+        tlcdns = new TlcDns(bind_ip.c_str(), port,
         suffix.c_str(), allowed.c_str(), localcf.c_str(),
 	dapzs, dapth,
 	enums.c_str(), tf.c_str(), verbose);

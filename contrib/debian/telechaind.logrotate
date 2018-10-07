@@ -1,0 +1,12 @@
+/var/lib/tlc/.telechain/*.log
+{
+  weekly
+  rotate 6
+  compress
+  delaycompress
+  missingok
+  create 0644 tlc tlc
+  postrotate
+    systemctl status telechaind >/dev/null 2>&1 && systemctl restart telechaind
+  endscript
+}

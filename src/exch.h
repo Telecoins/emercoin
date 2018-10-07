@@ -16,18 +16,18 @@ int HttpsLE(const char *host, const char *get, const char *post, const std::map<
 //-----------------------------------------------------
 class Exch {
   public:
-  Exch(const string &retAddr); 
+  Exch(const string &retAddr);
   virtual ~Exch() {};
 
   virtual const string& Name() const = 0;
   virtual const string& Host() const = 0;
-  
+
   // Get currency for exchnagge to, like btc, ltc, etc
   // Fill MarketInfo from exchange.
   // Returns the empty string if OK, or error message, if error
   virtual string MarketInfo(const string &currency, double amount) = 0;
 
-  // Create SEND exchange channel for 
+  // Create SEND exchange channel for
   // Send "amount" in external currecny "to" address
   // Fills m_depAddr..m_txKey, and updates m_rate
   // Returns error text, or an empty string, if OK
@@ -51,11 +51,11 @@ class Exch {
   virtual int Remain(const string &txkey) = 0;
 
 
-  // Returns extimated EMC to pay for specific pay_amount
+  // Returns extimated TLC to pay for specific pay_amount
   // Must be called after MarketInfo
-  double EstimatedEMC(double pay_amount) const;
+  double EstimatedTLC(double pay_amount) const;
 
-  string m_retAddr; // Return EMC Addr
+  string m_retAddr; // Return TLC Addr
 
   // MarketInfo fills these params
   string m_pair;
@@ -65,9 +65,9 @@ class Exch {
   double m_minerFee;
 
   // Send fills these params + m_rate above
-  string m_depAddr;	// Address to pay EMC
+  string m_depAddr;	// Address to pay TLC
   string m_outAddr;	// Address to pay from exchange
-  double m_depAmo;	// amount in EMC
+  double m_depAmo;	// amount in TLC
   double m_outAmo;	// Amount transferred to BTC
   string m_txKey;	// TX reference key
 
@@ -78,7 +78,7 @@ class Exch {
   // Throws exception if error
   UniValue httpsFetch(const char *get, const UniValue *post);
 
-  // Get input path within server, like: /api/marketinfo/emc_btc.json
+  // Get input path within server, like: /api/marketinfo/tlc_btc.json
   // Called from exchange-specific MarketInfo()
   // Fill MarketInfo from exchange.
   // Throws exception if error
@@ -112,7 +112,7 @@ class ExchCoinReform : public Exch {
   // Returns the empty string if OK, or error message, if error
   virtual string MarketInfo(const string &currency, double amount);
 
-  // Creatse SEND exchange channel for 
+  // Creatse SEND exchange channel for
   // Send "amount" in external currecny "to" address
   // Fills m_depAddr..m_txKey, and updates m_rate
   virtual string Send(const string &to, double amount);
@@ -151,7 +151,7 @@ class ExchCoinSwitch : public Exch {
   // Returns the empty string if OK, or error message, if error
   virtual string MarketInfo(const string &currency, double amount);
 
-  // Creatse SEND exchange channel for 
+  // Creatse SEND exchange channel for
   // Send "amount" in external currecny "to" address
   // Fills m_depAddr..m_txKey, and updates m_rate
   virtual string Send(const string &to, double amount);

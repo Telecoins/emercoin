@@ -1,4 +1,4 @@
-﻿//DpoRegisterDocWidget.h by Emercoin developers
+﻿//DpoRegisterDocWidget.h by Telechain developers
 #pragma once
 #include "NameValueLineEdits.h"
 

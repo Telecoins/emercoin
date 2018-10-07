@@ -69,7 +69,7 @@ public:
     void removeAllWallets();
 #endif // ENABLE_WALLET
     bool enableWallet;
-    QLabel *labelWalletEncryptionIcon; // emercoin: changed from private to public
+    QLabel *labelWalletEncryptionIcon; // telechain: changed from private to public
 
 protected:
     void changeEvent(QEvent *e);

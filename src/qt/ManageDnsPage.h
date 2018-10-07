@@ -1,4 +1,4 @@
-﻿//ManageDnsPage.h by emercoin developers
+﻿//ManageDnsPage.h by telechain developers
 #pragma once
 #include <QDialog>
 #include <QLineEdit>

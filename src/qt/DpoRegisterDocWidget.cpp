@@ -1,4 +1,4 @@
-﻿//DpoRegisterDocWidget.cpp by Emercoin developers
+﻿//DpoRegisterDocWidget.cpp by Telechain developers
 #include "DpoRegisterDocWidget.h"
 #include <QFormLayout>
 #include <QSettings>

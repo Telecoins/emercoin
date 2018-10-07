@@ -1,4 +1,4 @@
-﻿//DpoWidget.cpp by Emercoin developers
+﻿//DpoWidget.cpp by Telechain developers
 #include "DpoWidget.h"
 #include "DpoUseCaseScheme.h"
 #include "DpoCreateRootWidget.h"
@@ -15,9 +15,9 @@ DpoWidget::DpoWidget(QWidget*parent): QDialog(parent) {
 	setWindowIcon(QIcon(":/icons/DPO-32.png"));
 
 	auto lay = new QVBoxLayout(this);
-    auto description = new QLabel(tr(	
-		R"STR(DPO is <a href="https://emercoin.com/en/emerdpo">Digital Proof of Ownership</a>)STR"
-		));	
+    auto description = new QLabel(tr(
+		R"STR(DPO is <a href="https://telechain.io/en/ddpo">Digital Proof of Ownership</a>)STR"
+		));
     description->setOpenExternalLinks(true);
     lay->addWidget(description);
 

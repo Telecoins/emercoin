@@ -1,4 +1,4 @@
-﻿//DpoWidget.h by Emercoin developers
+﻿//DpoWidget.h by Telechain developers
 #pragma once
 #include <QTabWidget>
 #include <QDialog>

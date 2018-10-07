@@ -1,0 +1,7 @@
+contrib/trusty/tlc usr/bin
+contrib/trusty/telechain.conf var/lib/tlc/.telechain
+contrib/trusty/telechaind etc/init.d
+contrib/trusty/telechaind.logrotate etc/logrotate.d
+usr/local/bin/telechaind usr/bin
+usr/local/bin/telechain-cli usr/bin
+usr/local/bin/telechain-tx usr/bin

@@ -1,7 +1,7 @@
 /*
- * Part of Emercoin project
+ * Part of Telechain project
  *
- * This code is based on the examples from 
+ * This code is based on the examples from
  * https://github.com/libevent/libevent/tree/master/sample
  * LICENSE: BSD 3-caluse license
  *
@@ -39,7 +39,7 @@
 #include <ws2tcpip.h>
 #include <wincrypt.h>
 #define snprintf _snprintf
-#define strcasecmp _stricmp 
+#define strcasecmp _stricmp
 #else
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -74,7 +74,7 @@ typedef enum {
 
 //--------------- Body of "hostcheck.c"
 
-// EMC works on Intel platform only, there is always ASCII
+// TLC works on Intel platform only, there is always ASCII
 static char Curl_raw_toupper(char in) {
   return toupper(in);
 }
@@ -357,7 +357,7 @@ http_request_done(struct evhttp_request *req, void *ctx)
 	}
 
 	if((s_http_rc = evhttp_request_get_response_code(req)) > 300) {
-		sprintf(buffer, "https: HTTP Err=%u (%s)\n", 
+		sprintf(buffer, "https: HTTP Err=%u (%s)\n",
 			evhttp_request_get_response_code(req),
 			evhttp_request_get_response_code_line(req));
 		s_rc_err.append(buffer);
@@ -428,7 +428,7 @@ static int cert_verify_callback(X509_STORE_CTX *x509_ctx, void *arg)
 		return 1;
 	} else {
 		char buffer[1024];
-		sprintf(buffer, "SSL: Cert Err=%s (%s:%s)\n", 
+		sprintf(buffer, "SSL: Cert Err=%s (%s:%s)\n",
 		       res_str, host, cert_str);
 		s_rc_err.append(buffer);
 		return 0;
@@ -496,7 +496,7 @@ HttpsLE(const char *host, const char *get, const char *post, const std::map<std:
     if (X509_STORE_set_default_paths(store) != 1) {
       strcpy(buf, "HttpsLE: Err=X509_STORE_set_default_paths\n");
       break;
-    }	
+    }
 #else // _WIN32
     // Got sample from
     // http://openssl.6102.n7.nabble.com/Get-root-certificates-from-System-Store-of-Windows-td40959.html
@@ -594,7 +594,7 @@ HttpsLE(const char *host, const char *get, const char *post, const std::map<std:
     // Create HTTP heeader
     output_headers = evhttp_request_get_output_headers(req);
     evhttp_add_header(output_headers, "Host", host);
-    sprintf(tmp, "emercoin-json-rpc/%s", FormatFullVersion().c_str());
+    sprintf(tmp, "telechain-json-rpc/%s", FormatFullVersion().c_str());
     evhttp_add_header(output_headers, "User-Agent", tmp);
     evhttp_add_header(output_headers, "Accept", "application/json");
     evhttp_add_header(output_headers, "Connection", "close");
@@ -623,7 +623,7 @@ HttpsLE(const char *host, const char *get, const char *post, const std::map<std:
 
   } while(false);
 
-  if(buf[0]) 
+  if(buf[0])
     s_rc_err.append(buf);
 
   // Cleanup
@@ -665,4 +665,3 @@ HttpsLE(const char *host, const char *get, const char *post, const std::map<std:
 }
 
 //----------------------------E-O-F--------------------------------------
-

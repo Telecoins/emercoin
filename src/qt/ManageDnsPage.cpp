@@ -1,4 +1,4 @@
-﻿//ManageDnsPage.cpp.cpp by emercoin developers
+﻿//ManageDnsPage.cpp.cpp by telechain developers
 #include "ManageDnsPage.h"
 #include "IPv4LineEdit.h"
 #include <QToolButton>
@@ -12,16 +12,16 @@
 #include <QCommandLinkButton>
 
 ManageDnsPage::ManageDnsPage(QWidget*parent): QDialog(parent) {
-	setWindowTitle(tr("DNS names"));
-	setWindowIcon(QIcon(":/icons/EmerDNS-32.png"));
+	setWindowTitle(tr("dDNS names"));
+	setWindowIcon(QIcon(":/icons/dDNS-32.png"));
 	auto lay = new QVBoxLayout(this);
 	_NVPair = new NameValueLineEdits;
 
     auto description = new QLabel(tr(
-      "<a href=\"https://wiki.emercoin.com/en/EMCDNS\">EmerDNS</a> "
+      "<a href=\"https://docs.telechain.io/ddns\">dDNS</a> "
       "is a decentralized <a href=\"https://en.wikipedia.org/wiki/Domain_Name_System\">domain names system</a>"
       " supporting a full range of DNS <a href=\"https://en.wikipedia.org/wiki/List_of_DNS_record_types\">records.</a><br/>"
-      "On this page you can prepare EmerDNS name-value pairs to use them in 'Manage names' tab."));
+      "On this page you can prepare dDNS name-value pairs to use them in 'Manage names' tab."));
     description->setOpenExternalLinks(true);
     lay->addWidget(description);
 
@@ -35,9 +35,9 @@ ManageDnsPage::ManageDnsPage(QWidget*parent): QDialog(parent) {
     addLineEdit(form, "CNAME", tr("CNAME"), tr("Canonical name; alias of one name to another: the DNS lookup will continue by retrying the lookup with the new name."));
     addLineEdit(form, "PTR", tr("PTR"), tr("Pointer to a canonical name. Unlike a CNAME, DNS processing stops and just the name is returned."));
     addLineEdit(form, "TXT", tr("TXT"), tr("Arbitrary human-readable text. Nowdays more often carries machine-readable data, such as Policy Framework, DKIM, DMARC, DNS-SD, etc."));
-    addLineEdit(form, "SD", tr("SD"), tr("Subdomain - EmerDns feature"));
+    addLineEdit(form, "SD", tr("SD"), tr("Subdomain - dDNS feature"));
 	lay->addWidget(_NVPair);
-  
+
     {
 		auto lay2 = new QHBoxLayout();
 		lay->addLayout(lay2);

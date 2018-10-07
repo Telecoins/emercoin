@@ -1468,7 +1468,7 @@ void ThreadMapPort()
             }
         }
 
-        std::string strDesc = "Emercoin " + FormatFullVersion();
+        std::string strDesc = "Telechain " + FormatFullVersion();
 
         try {
             while (true) {

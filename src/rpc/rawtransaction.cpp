@@ -186,7 +186,7 @@ UniValue getrawtransaction(const JSONRPCRequest& request)
             "         \"reqSigs\" : n,            (numeric) The required sigs\n"
             "         \"type\" : \"pubkeyhash\",  (string) The type, eg 'pubkeyhash'\n"
             "         \"addresses\" : [           (json array of string)\n"
-            "           \"address\"        (string) emercoin address\n"
+            "           \"address\"        (string) telechain address\n"
             "           ,...\n"
             "         ]\n"
             "       }\n"
@@ -222,7 +222,7 @@ UniValue getrawtransaction(const JSONRPCRequest& request)
         }
         else {
             throw JSONRPCError(RPC_TYPE_ERROR, "Invalid type provided. Verbose parameter must be a boolean.");
-        } 
+        }
     }
 
     CTransactionRef tx;
@@ -380,7 +380,7 @@ UniValue createrawtransaction(const JSONRPCRequest& request)
             "     ]\n"
             "2. \"outputs\"               (object, required) a json object with outputs\n"
             "    {\n"
-            "      \"address\": x.xxx,    (numeric or string, required) The key is the emercoin address, the numeric value (can be string) is the " + CURRENCY_UNIT + " amount\n"
+            "      \"address\": x.xxx,    (numeric or string, required) The key is the telechain address, the numeric value (can be string) is the " + CURRENCY_UNIT + " amount\n"
             "      \"data\": \"hex\"      (string, required) The key is \"data\", the value is hex encoded data\n"
             "      ,...\n"
             "    }\n"
@@ -453,7 +453,7 @@ UniValue createrawtransaction(const JSONRPCRequest& request)
         } else {
             CBitcoinAddress address(name_);
             if (!address.IsValid())
-                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, string("Invalid Emercoin address: ")+name_);
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, string("Invalid Telechain address: ")+name_);
 
             if (setAddress.count(address))
                 throw JSONRPCError(RPC_INVALID_PARAMETER, string("Invalid parameter, duplicated address: ")+name_);
@@ -511,7 +511,7 @@ UniValue decoderawtransaction(const JSONRPCRequest& request)
             "         \"reqSigs\" : n,            (numeric) The required sigs\n"
             "         \"type\" : \"pubkeyhash\",  (string) The type, eg 'pubkeyhash'\n"
             "         \"addresses\" : [           (json array of string)\n"
-            "           \"12tvKAXCxZjSmdNbao16dKXC8tRWfcF5oc\"   (string) emercoin address\n"
+            "           \"12tvKAXCxZjSmdNbao16dKXC8tRWfcF5oc\"   (string) telechain address\n"
             "           ,...\n"
             "         ]\n"
             "       }\n"
@@ -554,7 +554,7 @@ UniValue decodescript(const JSONRPCRequest& request)
             "  \"type\":\"type\", (string) The output type\n"
             "  \"reqSigs\": n,    (numeric) The required signatures\n"
             "  \"addresses\": [   (json array of string)\n"
-            "     \"address\"     (string) emercoin address\n"
+            "     \"address\"     (string) telechain address\n"
             "     ,...\n"
             "  ],\n"
             "  \"p2sh\",\"address\" (string) address of P2SH script wrapping this redeem script (not returned if the script is already a P2SH).\n"
@@ -946,10 +946,10 @@ UniValue createrandpayaddr(const JSONRPCRequest& request)
             "\nArguments:\n"
             "1. \"encryptionkey\"   (string, optional) Encrypt privkey output with this key by AES/ECB)\n"
             "\nResult:\n"
-            "\"address\"            (string) Emercoin address.\n"
+            "\"address\"            (string) Telechain address.\n"
             "\"addrhex\"            (string) Raw 160-bit hex of address (binary, without checksum, result of MD4 of pubkey).\n"
             "\"privkey\"            (string) Privkey for this address.\n"
-            //emc add examples:
+            //tlc add examples:
             //"\nExamples:\n"
             //"\nCreate an address\n"
             //+ HelpExampleCli("createrandpayaddr", "") +
@@ -987,7 +987,7 @@ UniValue randpay_createaddrchap(const JSONRPCRequest& request)
             "2. timio         (numeric, required) ?\n"
             "\nResult:\n"
             "\"addrchap\"     (string) Challenge packet that needs to be solved.\n"
-            //emc add examples:
+            //tlc add examples:
             //"\nExamples:\n"
             //"\nCreate a priv/pubkey pair\n"
             //+ HelpExampleCli("randpay_createaddrchap", "") +
@@ -1002,7 +1002,7 @@ UniValue randpay_createaddrchap(const JSONRPCRequest& request)
     int32_t nTimio = request.params[1].get_int();
 
     arith_uint256 barrier = ((arith_uint256(1) << 160) / nRisk) * nRisk;
-    RandKeyT keyt; 
+    RandKeyT keyt;
     arith_uint256 X;
     do {
         keyt.key.MakeNewKey(true);
@@ -1029,13 +1029,13 @@ UniValue randpay_createtx(const JSONRPCRequest& request)
             "randpay_createtx amount \"addrchap\" risk timio\n"
             "\nCreates randpay tx.\n"
             "\nArguments:\n"
-            "1. amount         (numeric, required) Amount of emc to send.\n"
+            "1. amount         (numeric, required) Amount of tlc to send.\n"
             "2. \"addrchap\"   (string, required)  ?\n"
             "3. risk           (numeric, required) 1 / probability of success for random payments.\n"
             "4. timio          (numeric, required) Locks utxo from being spent in another tx for timio seconds.\n"
             "\nResult:\n"
             "\"transaction\"   (string) Hex string of the transaction.\n"
-            //emc add examples:
+            //tlc add examples:
             //"\nExamples:\n"
             //"\nCreate randpay tx\n"
             //+ HelpExampleCli("randpay_createtx", "") +
@@ -1102,7 +1102,7 @@ UniValue randpay_submittx(const JSONRPCRequest& request)
             "2. risk              (numeric, required) 1 / probability of success for random payments.\n"
             "\nResult:\n"
             "\"transaction\"      (string) Hex string of the transaction\n"
-            //emc add examples:
+            //tlc add examples:
             //"\nExamples:\n"
             //"\Send randpay tx\n"
             //+ HelpExampleCli("randpay_submittx", "") +
@@ -1116,10 +1116,10 @@ UniValue randpay_submittx(const JSONRPCRequest& request)
 //    uint32_t nRisk = request.params[1].get_int();
 
     InitMapRandKeyT();
-    
+
     UniValue result(UniValue::VOBJ);
 
-    //emc implement this command
+    //tlc implement this command
 
     return result;
 }
@@ -1134,7 +1134,7 @@ static const CRPCCommand commands[] =
     { "rawtransactions",    "sendrawtransaction",     &sendrawtransaction,     false, {"hexstring","allowhighfees"} },
     { "rawtransactions",    "signrawtransaction",     &signrawtransaction,     false, {"hexstring","prevtxs","privkeys","sighashtype"} }, /* uses wallet if enabled */
 
-    // emercoin: randpay commands
+    // telechain: randpay commands
     { "hidden",    "randpay_createaddrchap",          &randpay_createaddrchap, true,  {"risk","timio"} },
     { "hidden",    "randpay_createtx",                &randpay_createtx,       true,  {"amount","addrchap","risk","timio"} },
     { "hidden",    "randpay_submittx",                &randpay_submittx,       false, {"hexstring","risk"} },

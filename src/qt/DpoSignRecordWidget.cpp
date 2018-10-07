@@ -1,4 +1,4 @@
-﻿//DpoSignRecord.cpp by Emercoin developers
+﻿//DpoSignRecord.cpp by Telechain developers
 #include "DpoSignRecordWidget.h"
 
 DpoSignRecordWidget::DpoSignRecordWidget() {

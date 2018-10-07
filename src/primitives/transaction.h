@@ -197,7 +197,7 @@ public:
         int witnessversion = 0;
         std::vector<unsigned char> witnessprogram;
 
-        if (scriptPubKey.IsWitnessProgram(witnessversion, witnessprogram, 0)) { // emercoin: can be ignored for names
+        if (scriptPubKey.IsWitnessProgram(witnessversion, witnessprogram, 0)) { // telechain: can be ignored for names
             // sum the sizes of the parts of a transaction input
             // with 75% segwit discount applied to the script size.
             nSize += (32 + 4 + 1 + (107 / WITNESS_SCALE_FACTOR) + 4);
@@ -211,7 +211,7 @@ public:
     bool IsDust(const CFeeRate &minRelayTxFee) const
     {
         // return (nValue < GetDustThreshold(minRelayTxFee));
-        return false; // there is no dust in emercoin
+        return false; // there is no dust in telechain
     }
 
     friend bool operator==(const CTxOut& a, const CTxOut& b)
@@ -253,7 +253,7 @@ inline void UnserializeTransaction(TxType& tx, Stream& s) {
 
     s >> tx.nVersion;
 
-    // emercoin: do not read/write nTime in case of auxPow tx
+    // telechain: do not read/write nTime in case of auxPow tx
     if (!(s.GetType() & SER_BTC_TX))
         s >> tx.nTime;
 
@@ -293,7 +293,7 @@ inline void SerializeTransaction(const TxType& tx, Stream& s) {
 
     s << tx.nVersion;
 
-    // emercoin: do not read/write nTime in case of auxPow tx
+    // telechain: do not read/write nTime in case of auxPow tx
     if (!(s.GetType() & SER_BTC_TX))
         s << tx.nTime;
 
@@ -380,7 +380,7 @@ public:
         return hash;
     }
 
-    // emercoin: get bitcoin compatible hash for merged mining usage
+    // telechain: get bitcoin compatible hash for merged mining usage
     //           this hash is computed without nTime
     const uint256 GetBtcHash() const;
 

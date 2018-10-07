@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+. /usr/share/debconf/confmodule
+
+case "$1" in
+  remove|deconfigure|abort-install)
+    rm -f /var/tmp/telechain-install.flag
+    pkill -9 -u tlc > /dev/null 2>&1 || true
+    getent passwd tlc >/dev/null && userdel tlc >/dev/null 2>&1 || true
+    rm -f /etc/ssl/tlc/telechain.key /etc/ssl/tlc/telechain.crt /etc/telechain/telechain.conf /etc/telechain/certs
+  ;;
+esac
+
+exit 0

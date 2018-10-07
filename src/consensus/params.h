@@ -36,7 +36,7 @@ struct Params {
     uint256 nMinimumChainTrust;
     uint256 defaultAssumeValid;
 
-    // emercoin stuff:
+    // telechain stuff:
     uint256 bnInitialHashTarget;
     int64_t nStakeTargetSpacing;
     int64_t nTargetSpacingMax;

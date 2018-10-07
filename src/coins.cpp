@@ -34,7 +34,7 @@ void CCoins::CalcMaskSize(unsigned int &nBytes, unsigned int &nNonzeroBytes) con
     nBytes += nLastUsedByte;
 }
 
-bool CCoins::Spend(uint32_t nPos) 
+bool CCoins::Spend(uint32_t nPos)
 {
     if (nPos >= vout.size() || vout[nPos].IsNull())
         return false;
@@ -62,8 +62,8 @@ SaltedTxidHasher::SaltedTxidHasher() : k0(GetRand(std::numeric_limits<uint64_t>:
 
 CCoinsViewCache::CCoinsViewCache(CCoinsView *baseIn) : CCoinsViewBacked(baseIn), hasModifier(false), cachedCoinsUsage(0)
 {
-    // emercoin: insert special randpay utxo that can be spent unlimited number of times
-    // you can only spent 0 emc from it
+    // telechain: insert special randpay utxo that can be spent unlimited number of times
+    // you can only spent 0 tlc from it
     std::pair<CCoinsMap::iterator, bool> ret = cacheCoins.insert(std::make_pair(randpaytx, CCoinsCacheEntry()));
     if (!ret.second)
         throw std::logic_error("Failed to insert randpay utxo!");

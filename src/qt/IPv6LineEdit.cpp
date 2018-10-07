@@ -1,4 +1,4 @@
-﻿//IPv6LineEdit.cpp by emercoin developers
+﻿//IPv6LineEdit.cpp by telechain developers
 #include "pch.h"
 #include "IPv6LineEdit.h"
 

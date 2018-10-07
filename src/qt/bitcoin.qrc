@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/icons">
-        <file alias="emercoin">res/icons/emercoin.png</file>
-        <file alias="emercoin_testnet">res/icons/emercoin_testnet.png</file>
+        <file alias="telechain">res/icons/telechain.png</file>
+        <file alias="telechain_testnet">res/icons/telechain_testnet.png</file>
         <file alias="address-book">res/icons/address-book.png</file>
         <file alias="quit">res/icons/quit.png</file>
         <file alias="send">res/icons/send.png</file>
@@ -59,14 +59,14 @@
         <file alias="DPO-16.png">res/icons/DPO-16.png</file>
         <file alias="DPO-32.png">res/icons/DPO-32.png</file>
         <file alias="DPO_use_case_2.png">res/icons/DPO_use_case_2.png</file>
-        <file alias="EmerDNS-128.png">res/icons/EmerDNS-128.png</file>
-        <file alias="EmerDNS-16.png">res/icons/EmerDNS-16.png</file>
-        <file alias="EmerDNS-32.png">res/icons/EmerDNS-32.png</file>
-        <file alias="EmerSSL-16.png">res/icons/EmerSSL-16.png</file>
-        <file alias="EmerSSL-32.png">res/icons/EmerSSL-32.png</file>
-        <file alias="EmerSSL-64.png">res/icons/EmerSSL-64.png</file>
-        <file alias="Enumer-16.png">res/icons/Enumer-16.png</file>
-        <file alias="Enumer-32.png">res/icons/Enumer-32.png</file>
+        <file alias="dDNS-128.png">res/icons/dDNS-128.png</file>
+        <file alias="dDNS-16.png">res/icons/dDNS-16.png</file>
+        <file alias="dDNS-32.png">res/icons/dDNS-32.png</file>
+        <file alias="dSSL-16.png">res/icons/dSSL-16.png</file>
+        <file alias="dSSL-32.png">res/icons/dSSL-32.png</file>
+        <file alias="dSSL-64.png">res/icons/dSSL-64.png</file>
+        <file alias="dVOIP-16.png">res/icons/dVOIP-16.png</file>
+        <file alias="dVOIP-32.png">res/icons/dVOIP-32.png</file>
         <file alias="InfoCard-16.png">res/icons/InfoCard-16.png</file>
         <file alias="InfoCard-32.png">res/icons/InfoCard-32.png</file>
         <file alias="Trusted-diploma-16-monochrome.png">res/icons/Trusted-diploma-16-monochrome.png</file>

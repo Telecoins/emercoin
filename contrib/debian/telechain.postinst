@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e
+. /usr/share/debconf/confmodule
+
+case "$1" in
+  configure)
+    sed -i -e "s/\(^rpcpassword=MySuperPassword\)\(.*\)/rpcpassword=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)/" /var/lib/tlc/.telechain/telechain.conf
+    chmod 600 /var/lib/tlc/.telechain/telechain.conf
+    chown -R tlc.tlc /var/lib/tlc/.telechain /usr/bin/telechain-cli
+    chmod 4750 /usr/bin/telechain-cli
+    mkdir -p /etc/telechain
+    ln -sf /var/lib/tlc/.telechain/telechain.conf /etc/telechain/telechain.conf || true
+    ln -sf /etc/ssl/tlc /etc/telechain/certs || true
+    systemctl daemon-reload
+    [ -f /var/tmp/telechain-install.flag ] && {
+      rm -f /var/tmp/telechain-install.flag
+      systemctl enable telechaind
+    }
+    systemctl status telechaind >/dev/null 2>&1 && systemctl restart telechaind || {
+      systemctl is-enabled telechaind >/dev/null 2>&1 && systemctl start telechaind || true
+    }
+  ;;
+esac
+
+exit 0

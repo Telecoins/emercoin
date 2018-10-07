@@ -1,4 +1,4 @@
-﻿//DpoUseCaseScheme.h by Emercoin developers
+﻿//DpoUseCaseScheme.h by Telechain developers
 #pragma once
 #include <QWidget>
 

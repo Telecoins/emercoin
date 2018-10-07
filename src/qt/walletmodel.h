@@ -63,7 +63,7 @@ public:
     static const int CURRENT_VERSION = 1;
     int nVersion;
 
-    // emercoin: used by exchange
+    // telechain: used by exchange
     std::string comment;
     std::string commentto;
 
@@ -221,7 +221,7 @@ public:
 
     int getDefaultConfirmTarget() const;
 
-    // emercoin:
+    // telechain:
     bool getAddressForChange(std::string &sAddress);
 
 private:

@@ -1,4 +1,4 @@
-﻿//IPv4LineEdit.h by emercoin developers
+﻿//IPv4LineEdit.h by telechain developers
 #pragma once
 #include <QLineEdit>
 #include <QRegExpValidator>

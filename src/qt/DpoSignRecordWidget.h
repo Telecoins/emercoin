@@ -1,4 +1,4 @@
-﻿//DpoSignRecordWidget.h by Emercoin developers
+﻿//DpoSignRecordWidget.h by Telechain developers
 #pragma once
 #include <QLabel>
 

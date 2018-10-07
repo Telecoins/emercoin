@@ -1,0 +1,15 @@
+[Unit]
+Description=Telechain Wallet
+After=network.target
+
+[Service]
+Type=forking
+User=tlc
+ExecStart=/usr/bin/telechaind -daemon -datadir=/var/lib/tlc/.telechain -conf=/var/lib/tlc/.telechain/telechain.conf -pid=/var/lib/tlc/.telechain/telechaind.pid
+ExecStop=/usr/bin/telechain-cli -datadir=/var/lib/tlc/.telechain stop
+ExecReload=/usr/bin/kill -HUP $MAINPID
+PIDFile=/var/lib/tlc/.telechain/telechaind.pid
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

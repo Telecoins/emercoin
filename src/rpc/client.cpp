@@ -142,7 +142,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "reservebalance", 0, "reserve" },
     { "reservebalance", 1, "amount" },
 
-    // emercoin:
+    // telechain:
     { "name_new", 2, "days" },
     { "name_update", 2, "days" },
     { "name_scan", 1, "max-returned" },

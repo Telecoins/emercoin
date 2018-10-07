@@ -1,4 +1,4 @@
-﻿//PhoneNumberLineEdit.cpp by Emercoin developers
+﻿//PhoneNumberLineEdit.cpp by Telechain developers
 #include "PhoneNumberLineEdit.h"
 #include <QValidator>
 

@@ -461,21 +461,21 @@ bool CWallet::Verify()
         } catch (const boost::filesystem::filesystem_error&) {
             // failure is ok (well, not really, but it's not worse than what we started with)
         }
-        
+
         // try again
         if (!bitdb.Open(GetDataDir())) {
             // if it still fails, it probably means we can't even create the database env
             return InitError(strprintf(_("Error initializing wallet database environment %s!"), GetDataDir()));
         }
     }
-    
+
     if (GetBoolArg("-salvagewallet", false))
     {
         // Recover readable keypairs:
         if (!CWalletDB::Recover(bitdb, walletFile, true))
             return false;
     }
-    
+
     if (boost::filesystem::exists(GetDataDir() / walletFile))
     {
         CDBEnv::VerifyResult r = bitdb.Verify(walletFile, CWalletDB::Recover);
@@ -490,7 +490,7 @@ bool CWallet::Verify()
         if (r == CDBEnv::RECOVER_FAIL)
             return InitError(strprintf(_("%s corrupt, salvage failed"), walletFile));
     }
-    
+
     return true;
 }
 
@@ -2287,18 +2287,18 @@ bool CWallet::SelectCoinsMinConf(const CAmount& nTargetValue, const int nConfMin
   // If possible, solve subset sum by dynamic programming
   // Adeed by olegarch
 
-  // Maximal DP array size. Default=0.5G (12,800EMC)
+  // Maximal DP array size. Default=0.5G (12,800TLC)
   static uint32_t nMaxDP = 0;
   if(nMaxDP == 0)
       nMaxDP = GetArg("-maxdp", 128 * 1024 * 1024);
 
-  int32_t *dp; 
+  int32_t *dp;
   int tgt_shift = -(nTargetValue % TX_DP_AMOUNT > TX_DP_AMOUNT / 2);
   uint32_t dp_tgt = nTargetValue / TX_DP_AMOUNT - tgt_shift;
   if(dp_tgt < nMaxDP && (dp = (int32_t *)malloc((dp_tgt + 2) * sizeof(int32_t))) != NULL) {
     memset(dp, ~0, (dp_tgt + 1) * sizeof(int32_t));
     dp[dp_tgt + 1] = dp[0] = 0; // Zero CENTs can be reached anyway, and set right barrier
-    
+
     uint32_t min_over_sum  = ~0, min_over_txrem;
 
     // Apply UTXOs to DP array, until exact sum will be found
@@ -2557,7 +2557,7 @@ bool CWallet::CreateTransactionInner(const vector<CRecipient>& vecSend, const CW
         return false;
     }
 
-    // emercoin: define some values used in case of namecoin tx creation
+    // telechain: define some values used in case of namecoin tx creation
     CAmount nNameTxInCredit = 0;
     unsigned int nNameTxOut = 0;
     if (!wtxNameIn.tx->IsNull())
@@ -2569,7 +2569,7 @@ bool CWallet::CreateTransactionInner(const vector<CRecipient>& vecSend, const CW
     wtxNew.fTimeReceivedIsTxTime = true;
     wtxNew.BindWallet(this);
     CMutableTransaction txNew;
-    txNew.nVersion = wtxNew.tx->nVersion; // emercoin: important for name transactions
+    txNew.nVersion = wtxNew.tx->nVersion; // telechain: important for name transactions
 
     // Discourage fee sniping.
     //
@@ -2610,7 +2610,7 @@ bool CWallet::CreateTransactionInner(const vector<CRecipient>& vecSend, const CW
             std::vector<COutput> vAvailableCoins;
             AvailableCoins(vAvailableCoins, true, coinControl, wtxNew.tx->nTime);
 
-            nFeeRet = max(nFeeInput, MIN_TX_FEE);  // emercoin: a good starting point, probably...
+            nFeeRet = max(nFeeInput, MIN_TX_FEE);  // telechain: a good starting point, probably...
             // Start with no fee and loop until there is enough fee
             while (true)
             {
@@ -2658,14 +2658,14 @@ bool CWallet::CreateTransactionInner(const vector<CRecipient>& vecSend, const CW
                 // Choose coins to use
                 CAmount nValueIn = 0;
                 setCoins.clear();
-                // emercoin: in case of name tx we have already supplied input
+                // telechain: in case of name tx we have already supplied input
                 //           skip coin selection if we have enough money in name input
                 if (nValueToSelect - nNameTxInCredit > 0 && !SelectCoins(vAvailableCoins, nValueToSelect - nNameTxInCredit, setCoins, nValueIn, coinControl))
                 {
                     strFailReason = _("Insufficient funds");
                     return false;
                 }
-                // emercoin: add name input
+                // telechain: add name input
                 if (!wtxNameIn.tx->IsNull())
                 {
                     setCoins.insert(setCoins.begin(), make_pair(&wtxNameIn, nNameTxOut));
@@ -2797,7 +2797,7 @@ bool CWallet::CreateTransactionInner(const vector<CRecipient>& vecSend, const CW
                 }
 
                 CAmount nFeeNeeded = GetMinimumFee(nBytes);
-                // emercoin: disabled
+                // telechain: disabled
 //                if (coinControl && nFeeNeeded > 0 && coinControl->nMinimumTotalFee > nFeeNeeded) {
 //                    nFeeNeeded = coinControl->nMinimumTotalFee;
 //                }
@@ -2824,7 +2824,7 @@ bool CWallet::CreateTransactionInner(const vector<CRecipient>& vecSend, const CW
                     }
                 }
 
-                // emercoin: check that enough fee is included (at least MIN_TX_FEE per 10 kb)
+                // telechain: check that enough fee is included (at least MIN_TX_FEE per 10 kb)
                 CAmount nMinFee = max(nFeeInput, nFeeNeeded);
                 if (nFeeRet < nMinFee)
                 {
@@ -2960,7 +2960,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         if (pbo == NULL || pbo->value.first == NULL) {
           CDiskTxPos postx;
           CBlockHeader *cbh = (CBlockHeader *)0x1; // default=Error
-          if(pblocktree->ReadTxIndex(tx_hash, postx)) { 
+          if(pblocktree->ReadTxIndex(tx_hash, postx)) {
             // Read block header
             CAutoFile file(OpenBlockFile(postx, true), SER_DISK, CLIENT_VERSION);
             cbh = new CBlockHeader;
@@ -3085,7 +3085,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     {
         CAmount nReward = 0;
         CCoinsViewCache view(pcoinsTip);
-        if (!GetEmc7POSReward(txNew, view, nReward))
+        if (!GetTlc7POSReward(txNew, view, nReward))
             return error("CreateCoinStake() : %s unable to get coin reward for coinstake", txNew.GetHash().ToString());
         if (nReward <= 10 * TX_DP_AMOUNT)
             return false; // Prevent extra small UTXO
@@ -3368,7 +3368,7 @@ bool CWallet::SetDefaultKey(const CPubKey &vchPubKey)
 
 /**
  * Mark old keypool keys as used,
- * and generate all new keys 
+ * and generate all new keys
  */
 bool CWallet::NewKeyPool()
 {
@@ -4244,7 +4244,7 @@ bool CWallet::ParameterInteraction()
     }
     nTxConfirmTarget = GetArg("-txconfirmtarget", DEFAULT_TX_CONFIRM_TARGET);
     bSpendZeroConfChange = GetBoolArg("-spendzeroconfchange", DEFAULT_SPEND_ZEROCONF_CHANGE);
-    fSendFreeTransactions = DEFAULT_SEND_FREE_TRANSACTIONS;  // disabled in emercoin
+    fSendFreeTransactions = DEFAULT_SEND_FREE_TRANSACTIONS;  // disabled in telechain
     fWalletRbf = GetBoolArg("-walletrbf", DEFAULT_WALLET_RBF);
 
     if (fSendFreeTransactions && GetArg("-limitfreerelay", DEFAULT_LIMITFREERELAY) <= 0)

@@ -1,11 +1,11 @@
 /*
  * HashMap container for uint256 index -> value
- * Part of EmerCoin project.
+ * Part of Telechain project.
  *
  */
 
-#ifndef EMC_UINT256HM_H
-#define EMC_UINT256HM_H
+#ifndef TLC_UINT256HM_H
+#define TLC_UINT256HM_H
 
 #include "uint256.h"
 #include "random.h"

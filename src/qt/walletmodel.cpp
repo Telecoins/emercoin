@@ -738,7 +738,7 @@ int WalletModel::getDefaultConfirmTarget() const
     return nTxConfirmTarget;
 }
 
-// emercoin: get existing address from keypool without removing it from keypool
+// telechain: get existing address from keypool without removing it from keypool
 bool WalletModel::getAddressForChange(std::string &sAddress)
 {
     if (!wallet->IsLocked())

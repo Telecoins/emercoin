@@ -37,7 +37,7 @@ if ENABLE_ZMQ
 LIBBITCOIN_ZMQ=libbitcoin_zmq.a
 endif
 if BUILD_BITCOIN_LIBS
-LIBBITCOINCONSENSUS=libemercoinconsensus.la
+LIBBITCOINCONSENSUS=libtelechainconsensus.la
 endif
 if ENABLE_WALLET
 LIBBITCOIN_WALLET=libbitcoin_wallet.a
@@ -66,11 +66,11 @@ TESTS =
 BENCHMARKS =
 
 if BUILD_BITCOIND
-  bin_PROGRAMS += emercoind
+  bin_PROGRAMS += telechaind
 endif
 
 if BUILD_BITCOIN_UTILS
-  bin_PROGRAMS += emercoin-cli emercoin-tx
+  bin_PROGRAMS += telechain-cli telechain-tx
 endif
 
 .PHONY: FORCE check-symbols check-security
@@ -165,12 +165,12 @@ BITCOIN_CORE_H = \
   zmq/zmqconfig.h\
   zmq/zmqnotificationinterface.h \
   zmq/zmqpublishnotifier.h \
-## --- ppcoin and emercoin headers start from this line --- ##
+## --- ppcoin and telechain headers start from this line --- ##
   uint256hm.h \
   kernel.h \
   namecoin.h \
   hooks.h \
-  emcdns.h \
+  tlcdns.h \
   checkpoints_eb.h \
   ministun.h \
   exch.h
@@ -221,10 +221,10 @@ libbitcoin_server_a_SOURCES = \
   ui_interface.cpp \
   validation.cpp \
   validationinterface.cpp \
-## --- ppcoin and emercoin sources start from this line --- ##
+## --- ppcoin and telechain sources start from this line --- ##
   kernel.cpp \
   namecoin.cpp \
-  emcdns.cpp \
+  tlcdns.cpp \
   stun.cpp \
   exch.cpp \
   https-cli.cpp \
@@ -298,7 +298,7 @@ libbitcoin_consensus_a_SOURCES = \
   primitives/transaction.h \
   pubkey.cpp \
   pubkey.h \
-  script/emercoinconsensus.cpp \
+  script/telechainconsensus.cpp \
   script/interpreter.cpp \
   script/interpreter.h \
   script/script.cpp \
@@ -374,16 +374,16 @@ nodist_libbitcoin_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
 # bitcoind binary #
-emercoind_SOURCES = bitcoind.cpp
-emercoind_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-emercoind_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-emercoind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+telechaind_SOURCES = bitcoind.cpp
+telechaind_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+telechaind_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+telechaind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-emercoind_SOURCES += bitcoind-res.rc
+telechaind_SOURCES += bitcoind-res.rc
 endif
 
-emercoind_LDADD = \
+telechaind_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_COMMON) \
   $(LIBUNIVALUE) \
@@ -396,38 +396,38 @@ emercoind_LDADD = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-emercoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_OPENSSL_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
+telechaind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_OPENSSL_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
 
 # bitcoin-cli binary #
-emercoin_cli_SOURCES = bitcoin-cli.cpp
-emercoin_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
-emercoin_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-emercoin_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+telechain_cli_SOURCES = bitcoin-cli.cpp
+telechain_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
+telechain_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+telechain_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-emercoin_cli_SOURCES += bitcoin-cli-res.rc
+telechain_cli_SOURCES += bitcoin-cli-res.rc
 endif
 
-emercoin_cli_LDADD = \
+telechain_cli_LDADD = \
   $(LIBBITCOIN_CLI) \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO)
 
-emercoin_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
+telechain_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
 #
 
 # bitcoin-tx binary #
-emercoin_tx_SOURCES = bitcoin-tx.cpp
-emercoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-emercoin_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-emercoin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+telechain_tx_SOURCES = bitcoin-tx.cpp
+telechain_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+telechain_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+telechain_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-emercoin_tx_SOURCES += bitcoin-tx-res.rc
+telechain_tx_SOURCES += bitcoin-tx-res.rc
 endif
 
-emercoin_tx_LDADD = \
+telechain_tx_LDADD = \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
@@ -435,23 +435,23 @@ emercoin_tx_LDADD = \
   $(LIBBITCOIN_CRYPTO) \
   $(LIBSECP256K1)
 
-emercoin_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
+telechain_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
 #
 
-# emercoinconsensus library #
+# telechainconsensus library #
 if BUILD_BITCOIN_LIBS
-include_HEADERS = script/emercoinconsensus.h
-libemercoinconsensus_la_SOURCES = $(crypto_libbitcoin_crypto_a_SOURCES) $(libbitcoin_consensus_a_SOURCES)
-libemercoinconsensus_la_SOURCES += support/cleanse.cpp
+include_HEADERS = script/telechainconsensus.h
+libtelechainconsensus_la_SOURCES = $(crypto_libbitcoin_crypto_a_SOURCES) $(libbitcoin_consensus_a_SOURCES)
+libtelechainconsensus_la_SOURCES += support/cleanse.cpp
 
 if GLIBC_BACK_COMPAT
-  libemercoinconsensus_la_SOURCES += compat/glibc_compat.cpp
+  libtelechainconsensus_la_SOURCES += compat/glibc_compat.cpp
 endif
 
-libemercoinconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
-libemercoinconsensus_la_LIBADD = $(LIBSECP256K1) $(CRYPTO_LIBS)
-libemercoinconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_BITCOIN_INTERNAL
-libemercoinconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libtelechainconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
+libtelechainconsensus_la_LIBADD = $(LIBSECP256K1) $(CRYPTO_LIBS)
+libtelechainconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_BITCOIN_INTERNAL
+libtelechainconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 endif
 #

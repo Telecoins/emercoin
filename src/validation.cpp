@@ -51,7 +51,7 @@
 #include <boost/thread.hpp>
 
 #if defined(NDEBUG)
-# error "Emercoin cannot be compiled without assertions."
+# error "Telechain cannot be compiled without assertions."
 #endif
 
 /**
@@ -93,8 +93,8 @@ static void CheckBlockIndex(const Consensus::Params& consensusParams);
 /** Constant stuff for coinbase transactions we create: */
 CScript COINBASE_FLAGS;
 
-const std::string strMessageMagic = "EmerCoin Signed Message:\n";
-CHooks* hooks = InitHook(); //this adds namecoin hooks which allow splicing of code inside standart emercoin functions.
+const std::string strMessageMagic = "Telechain Signed Message:\n";
+CHooks* hooks = InitHook(); //this adds namecoin hooks which allow splicing of code inside standart telechain functions.
 
 std::map<uint256, std::shared_ptr<CAuxPow>> mapDirtyAuxPow;
 
@@ -606,18 +606,18 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState& state, const C
         return state.DoS(0, false, REJECT_NONSTANDARD, "no-witness-yet", true);
     }
 
-    // emercoin: rather not accept more than one name op on the same name
+    // telechain: rather not accept more than one name op on the same name
     bool isNameTx = tx.nVersion == NAMECOIN_TX_VERSION;
     if (isNameTx && !hooks->CheckPendingNames(ptx))
         return state.DoS(0, false, REJECT_NONSTANDARD, "name-op-on-pending-name");
 
-    // emercoin: reject names in P2SH transaction before V7 fork
+    // telechain: reject names in P2SH transaction before V7 fork
     if (!witnessEnabled && isNameTx && !GetBoolArg("-prematurewitness",false))
         for (const auto& out : tx.vout)
             if (out.scriptPubKey.IsPayToScriptHash(tx.nVersion))
                 return state.DoS(0, false, REJECT_NONSTANDARD, "premature-name-in-p2sh", true);
 
-    // emercoin: reject randpay until v7 fork
+    // telechain: reject randpay until v7 fork
     if (!witnessEnabled)
         for (const CTxIn& txin : tx.vin)
             if (txin.prevout.hash == randpaytx)
@@ -790,7 +790,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState& state, const C
             return state.DoS(0, false, REJECT_INSUFFICIENTFEE, "insufficient priority");
         }
 
-        // emercoin: MIN_TXOUT_AMOUNT was added because of weird behavior of CreateTransactionInner that can add sub-subcents on top of absurd fee.
+        // telechain: MIN_TXOUT_AMOUNT was added because of weird behavior of CreateTransactionInner that can add sub-subcents on top of absurd fee.
         if (nAbsurdFee && nFees > nAbsurdFee + MIN_TXOUT_AMOUNT && !isNameTx)
             return state.Invalid(false,
                 REJECT_HIGHFEE, "absurdly-high-fee",
@@ -990,7 +990,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState& state, const C
         // Remove conflicting transactions from the mempool
         BOOST_FOREACH(const CTxMemPool::txiter it, allConflicting)
         {
-            LogPrint("mempool", "replacing tx %s with %s for %s EMC additional fees, %d delta bytes\n",
+            LogPrint("mempool", "replacing tx %s with %s for %s TLC additional fees, %d delta bytes\n",
                     it->GetTx().GetHash().ToString(),
                     hash.ToString(),
                     FormatMoney(nModifiedFees - nConflictingFees),
@@ -1286,7 +1286,7 @@ CBlockIndex *pindexBestForkTip = NULL, *pindexBestForkBase = NULL;
 void AlertNotify(const std::string& strMessage, bool fUpdateUI)
 {
     if (fUpdateUI)
-        uiInterface.NotifyAlertChanged(uint256(), CT_UPDATED); // emercoin: we are using arguments that will have no effects in updateAlert()
+        uiInterface.NotifyAlertChanged(uint256(), CT_UPDATED); // telechain: we are using arguments that will have no effects in updateAlert()
     std::string strCmd = GetArg("-alertnotify", "");
     if (strCmd.empty()) return;
 
@@ -1409,7 +1409,7 @@ void UpdateCoins(const CTransaction& tx, CCoinsViewCache& inputs, CTxUndo &txund
     if (!tx.IsCoinBase()) {
         txundo.vprevout.reserve(tx.vin.size());
         BOOST_FOREACH(const CTxIn &txin, tx.vin) {
-            // emercoin: skip special randpay utxo, because we don't record undo information for it
+            // telechain: skip special randpay utxo, because we don't record undo information for it
             if (txin.prevout.hash == randpaytx)
                 continue;
 
@@ -1478,7 +1478,7 @@ bool CheckTxInputs(const CTransaction& tx, CValidationState& state, const CCoins
             assert(coins);
             // If prev is coinbase, check that it's matured
             if (coins->IsCoinBase() || coins->IsCoinStake()) {
-                // emercoin: at some point we changed coinbase maturity from 12 to 32
+                // telechain: at some point we changed coinbase maturity from 12 to 32
                 int cnbMaturity = nSpendHeight > 193912 ? ::Params().GetConsensus().nCoinbaseMaturity : ::Params().GetConsensus().nCoinbaseMaturityOld;
                 if (nSpendHeight - coins->nHeight < cnbMaturity)
                     return state.Invalid(false,
@@ -1501,7 +1501,7 @@ bool CheckTxInputs(const CTransaction& tx, CValidationState& state, const CCoins
     {
         // ppcoin: coin stake tx earns reward instead of paying fee
         CAmount nLimit = 0;
-        if (!GetEmc7POSReward(tx, inputs, nLimit))
+        if (!GetTlc7POSReward(tx, inputs, nLimit))
             return error("CheckTxInputs() : %s unable to get coin reward for coinstake", tx.GetHash().ToString());
         CAmount nStakeReward = tx.GetValueOut() - nValueIn;
         if (nStakeReward > nLimit - tx.GetMinFee() + MIN_TX_FEE)
@@ -1744,7 +1744,7 @@ bool DisconnectBlock(const CBlock& block, CValidationState& state, const CBlockI
         // restore inputs
         if (i > 0) { // not coinbases
             const CTxUndo &txundo = blockUndo.vtxundo[i-1];
-            // emercoin: skip special randpay utxo, because we don't record undo information for it
+            // telechain: skip special randpay utxo, because we don't record undo information for it
             vector<reference_wrapper<const CTxIn>> vinWithoutRandpay;
             vinWithoutRandpay.reserve(tx.vin.size());
             for (const CTxIn& txin : tx.vin)
@@ -1763,11 +1763,11 @@ bool DisconnectBlock(const CBlock& block, CValidationState& state, const CBlockI
         }
     }
 
-    // emercoin: needed for FlushStateToDisk()
+    // telechain: needed for FlushStateToDisk()
     if (block.nVersion & BLOCK_VERSION_AUXPOW)
         mapDirtyAuxPow.insert(std::make_pair(block.GetHash(), block.auxpow));
 
-    // emercoin: undo name transactions in reverse order
+    // telechain: undo name transactions in reverse order
     if (fWriteNames)
         for (int i = block.vtx.size() - 1; i >= 0; i--)
             hooks->DisconnectInputs(block.vtx[i]);
@@ -1811,7 +1811,7 @@ bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos, unsigne
 static CCheckQueue<CScriptCheck> scriptcheckqueue(128);
 
 void ThreadScriptCheck() {
-    RenameThread("emercoin-scriptch");
+    RenameThread("telechain-scriptch");
     scriptcheckqueue.Thread();
 }
 
@@ -2026,7 +2026,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     std::vector<PrecomputedTransactionData> txdata;
     txdata.reserve(block.vtx.size()); // Required so that pointers to individual PrecomputedTransactionData don't get invalidated
 
-    // emercoin: variables for name fees check, nMoneySupply calculation and trustHeight option
+    // telechain: variables for name fees check, nMoneySupply calculation and trustHeight option
     CAmount nValueIn = 0;
     CAmount nValueOut = 0;
     std::vector<CAmount> vFees (block.vtx.size(), 0);
@@ -2113,7 +2113,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     pindex->nMint = nValueOut - nValueIn + nFees;
     pindex->nMoneySupply = (pindex->pprev? pindex->pprev->nMoneySupply : 0) + nValueOut - nValueIn;
 
-    // emercoin: collect valid name tx
+    // telechain: collect valid name tx
     // NOTE: tx.UpdateCoins should not affect this loop, probably...
     vector<nameTempProxy> vName;
     if (fWriteNames)
@@ -2154,7 +2154,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     GetMainSignals().UpdatedTransaction(hashPrevBestCoinBase);
     hashPrevBestCoinBase = block.vtx[0]->GetHash();
 
-    // emercoin: add names to nameindex.dat
+    // telechain: add names to nameindex.dat
     if (fWriteNames && !vName.empty())
         hooks->ConnectBlock(pindex, vName);
 
@@ -3077,7 +3077,7 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
         if (block.GetBlockTime() < (int64_t)tx->nTime)
             return state.DoS(50, false, REJECT_INVALID, "bad-tx-time", false, strprintf("%s : block timestamp earlier than transaction timestamp", __func__));
 
-        // emercoin: only one randpay utxo is allowed per transaction
+        // telechain: only one randpay utxo is allowed per transaction
         bool found = false;
         for (const CTxIn& txin : tx->vin)
         {
@@ -3182,7 +3182,7 @@ bool ContextualCheckBlockHeader(const CBlockHeader& block, bool fProofOfStake, C
     }
     else
     {
-        // this is needed only for emercoin official blockchain, because of mistake we made at the beginning
+        // this is needed only for telechain official blockchain, because of mistake we made at the beginning
         unsigned int check = GetNextTargetRequired(pindexPrev, fProofOfStake, consensusParams);
         unsigned int max_error = check / 100000;
         if (!(block.nBits >= check - max_error && block.nBits <= check + max_error)) // +- 0.001% interval
@@ -3214,7 +3214,7 @@ bool ContextualCheckBlockHeader(const CBlockHeader& block, bool fProofOfStake, C
     return true;
 }
 
-// emercoin: note, this function can process blocks without strict order
+// telechain: note, this function can process blocks without strict order
 // use it only if all needed context information can be obtain from headers (headers are always in strict order)
 bool ContextualCheckBlock(const CBlock& block, CValidationState& state, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev, bool fCheckSign)
 {
@@ -3238,7 +3238,7 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, const Co
                               : block.GetBlockTime();
 
     // Check that all transactions are finalized
-    // emercoin: also forbid randpay until v7 fork
+    // telechain: also forbid randpay until v7 fork
     for (const auto& tx : block.vtx) {
         if (!IsFinalTx(*tx, nHeight, nLockTimeCutoff)) {
             return state.DoS(10, false, REJECT_INVALID, "bad-txns-nonfinal", false, "non-final transaction");
@@ -4113,7 +4113,7 @@ bool InitBlockIndex(const CChainParams& chainparams)
     // Check whether we're already initialized
     if (chainActive.Genesis() != NULL)
         //return true;
-        // emercoin: we want to execute checkpoint key initialization in both cases of this "if"
+        // telechain: we want to execute checkpoint key initialization in both cases of this "if"
         goto checkpoint_key_init;
 
     // Use the provided setting for -txindex in the new database
@@ -4135,7 +4135,7 @@ bool InitBlockIndex(const CChainParams& chainparams)
             if (!WriteBlockToDisk(block, blockPos, chainparams.MessageStart()))
                 return error("LoadBlockIndex(): writing genesis block to disk failed");
             CBlockIndex *pindex = AddToBlockIndex(block, false);
-            // emercoin: calculate pindex->nFlags for genesis block before doing FlushStateToDisk()
+            // telechain: calculate pindex->nFlags for genesis block before doing FlushStateToDisk()
             ppcoinContextualBlockChecks(block, state, pindex, false);
             if (!ReceivedBlockTransactions(block, state, pindex, blockPos))
                 return error("LoadBlockIndex(): genesis block not accepted");
@@ -4625,7 +4625,7 @@ public:
 } instance_of_cmaincleanup;
 
 // combination of GetCoinAge() and GetProofOfStakeReward()
-bool GetEmc7POSReward(const CTransaction& tx, const CCoinsViewCache &view, CAmount &nReward)
+bool GetTlc7POSReward(const CTransaction& tx, const CCoinsViewCache &view, CAmount &nReward)
 {
     nReward = 0;
 
@@ -4685,12 +4685,12 @@ bool GetEmc7POSReward(const CTransaction& tx, const CCoinsViewCache &view, CAmou
 
     // Apply 6% APY and round to DP-unit
     nReward = ((bnSatYr * 6 / 100).GetLow64() / TX_DP_AMOUNT) * TX_DP_AMOUNT;
- 
+
     if (fDebug && GetBoolArg("-printcreation", false))
-        LogPrintf("GetEmc7POSReward(): create=%s nCoinAge=%s\n", FormatMoney(nReward), bnSatYr.ToString());
+        LogPrintf("GetTlc7POSReward(): create=%s nCoinAge=%s\n", FormatMoney(nReward), bnSatYr.ToString());
 
     return true;
-} // GetEmc7POSReward
+} // GetTlc7POSReward
 
 typedef std::vector<unsigned char> valtype;
 bool SelectPubkeyForBlockSigning(const CBlock& block, vector<valtype>& vSolutions, bool fV7Enabled)
@@ -4772,7 +4772,7 @@ bool CheckMinTxOut(const CBlock& block, bool fV7Enabled)
         const CTransactionRef& tx0 = block.vtx[0];
         for (size_t j = 0; j < tx0->vout.size(); j++)
         {
-            // emercoin: enforce minimum output amount if not witness commitment
+            // telechain: enforce minimum output amount if not witness commitment
             bool fWC = commitpos >= 0 && (unsigned int)commitpos == j;
             if (!fWC && !tx0->vout[j].IsEmpty() && tx0->vout[j].nValue < MIN_TXOUT_AMOUNT)
                 return false;

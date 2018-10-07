@@ -38,7 +38,7 @@ Exch::Exch(const string &retAddr)
 }
 
 //-----------------------------------------------------
-// Get input path within server, like: /api/marketinfo/emc_btc.json
+// Get input path within server, like: /api/marketinfo/tlc_btc.json
 // Called from exchange-specific MarketInfo()
 // Fill MarketInfo from exchange.
 // Throws exception if error
@@ -49,12 +49,12 @@ const UniValue Exch::RawMarketInfo(const string &path) {
 } //  Exch::RawMarketInfo
 
 //-----------------------------------------------------
-// Returns extimated EMC to pay for specific pay_amount
+// Returns extimated TLC to pay for specific pay_amount
 // Must be called after MarketInfo
-double Exch::EstimatedEMC(double pay_amount) const {
+double Exch::EstimatedTLC(double pay_amount) const {
   return (m_rate <= 0.0)?
     m_rate : ceil(100.0 * (pay_amount + m_minerFee) / m_rate) / 100.0;
-} // Exch::EstimatedEMC
+} // Exch::EstimatedTLC
 
 //-----------------------------------------------------
 // Connect to the server by https, fetch JSON and parse to UniValue
@@ -138,7 +138,7 @@ UniValue Exch::httpsFetch(const char *get, const UniValue *post) {
   // Send request
   stream << reqType << (get? get : "/") << " HTTP/1.1\r\n"
          << "Host: " << Host() << "\r\n"
-         << "User-Agent: emercoin-json-rpc/" << FormatFullVersion() << "\r\n";
+         << "User-Agent: telechain-json-rpc/" << FormatFullVersion() << "\r\n";
 
   if(postBody.size()) {
     stream << "Content-Type: application/json\r\n"
@@ -205,7 +205,7 @@ void Exch::CheckERR(const UniValue &reply) const {
 // Return NULL if "Not my key" or invalid key
 const char *Exch::RawKey(const string &txkey) const {
   const char *key = txkey.empty()? m_txKey.c_str() : txkey.c_str();
-  if(strncmp(key, Name().c_str(), Name().length()) != 0) 
+  if(strncmp(key, Name().c_str(), Name().length()) != 0)
     return NULL; // Not my key
   key += Name().length();
   if(*key++ != ':')
@@ -224,7 +224,7 @@ ExchCoinReform::ExchCoinReform(const string &retAddr)
 ExchCoinReform::~ExchCoinReform() {}
 
 //-----------------------------------------------------
-const string& ExchCoinReform::Name() const { 
+const string& ExchCoinReform::Name() const {
   static const string rc("CoinReform");
   return rc;
 }
@@ -242,7 +242,7 @@ const string& ExchCoinReform::Host() const {
 string ExchCoinReform::MarketInfo(const string &currency, double amount) {
   try {
     const UniValue mi(RawMarketInfo("/api/marketinfo/ltc_" + currency + ".json"));
-    //const UniValue mi(RawMarketInfo("/api/marketinfo/emc_" + currency + ".json"));
+    //const UniValue mi(RawMarketInfo("/api/marketinfo/tlc_" + currency + ".json"));
     LogPrint("exch", "DBG: ExchCoinReform::MarketInfo(%s|%s) returns <%s>\n\n", Host().c_str(), currency.c_str(), mi.write(0, 0, 0).c_str());
     m_pair     = mi["pair"].get_str();
     m_rate     = atof(mi["rate"].get_str().c_str());
@@ -255,10 +255,10 @@ string ExchCoinReform::MarketInfo(const string &currency, double amount) {
   }
 } // ExchCoinReform::MarketInfo
 //coinReform
-//{"pair":"EMC_BTC","rate":"0.00016236","limit":"0.01623600","min":"0.00030000","minerFee":"0.00050000"}
+//{"pair":"TLC_BTC","rate":"0.00016236","limit":"0.01623600","min":"0.00030000","minerFee":"0.00050000"}
 
 //-----------------------------------------------------
-// Creatse SEND exchange channel for 
+// Creatse SEND exchange channel for
 // Send "amount" in external currecny "to" address
 // Fills m_depAddr..m_txKey, and updates m_rate
 // Returns error text, or empty string, if OK
@@ -287,13 +287,13 @@ string ExchCoinReform::Send(const string &to, double amount) {
     UniValue Resp(httpsFetch("/api/sendamount", &Req));
     LogPrint("exch", "DBG: ExchCoinReform::Send(%s|%s) returns <%s>\n\n", Host().c_str(), m_pair.c_str(), Resp.write(0, 0, 0).c_str());
     m_rate     = atof(Resp["rate"].get_str().c_str());
-    m_depAddr  = Resp["deposit"].get_str();			// Address to pay EMC
+    m_depAddr  = Resp["deposit"].get_str();			// Address to pay TLC
     m_outAddr  = Resp["withdrawal"].get_str();			// Address to pay from exchange
-    m_depAmo   = atof(Resp["deposit_amount"].get_str().c_str());// amount in EMC
+    m_depAmo   = atof(Resp["deposit_amount"].get_str().c_str());// amount in TLC
     m_outAmo   = atof(Resp["withdrawal_amount"].get_str().c_str());// Amount transferred to BTC
     m_txKey    = Name() + ':' + Resp["key"].get_str();		// TX reference key
 
-    // Adjust deposit amount to 1EMCent, upward
+    // Adjust deposit amount to 1TLCent, upward
     m_depAmo = ceil(m_depAmo * 100.0) / 100.0;
 
     return "";
@@ -376,7 +376,7 @@ ExchCoinSwitch::ExchCoinSwitch(const string &retAddr)
 ExchCoinSwitch::~ExchCoinSwitch() {}
 
 //-----------------------------------------------------
-const string& ExchCoinSwitch::Name() const { 
+const string& ExchCoinSwitch::Name() const {
   static const string rc("CoinSwitch");
   return rc;
 }
@@ -403,7 +403,7 @@ void ExchCoinSwitch::FillHeader() {
 string ExchCoinSwitch::MarketInfo(const string &currency, double amount) {
   try {
     const UniValue mi(RawMarketInfo("/api/marketinfo/ltc_" + currency + ".json"));
-    //const UniValue mi(RawMarketInfo("/api/marketinfo/emc_" + currency + ".json"));
+    //const UniValue mi(RawMarketInfo("/api/marketinfo/tlc_" + currency + ".json"));
     LogPrint("exch", "DBG: ExchCoinSwitch::MarketInfo(%s|%s) returns <%s>\n\n", Host().c_str(), currency.c_str(), mi.write(0, 0, 0).c_str());
     m_pair     = mi["pair"].get_str();
     m_rate     = atof(mi["rate"].get_str().c_str());
@@ -416,10 +416,10 @@ string ExchCoinSwitch::MarketInfo(const string &currency, double amount) {
   }
 } // ExchCoinSwitch::MarketInfo
 //coinReform
-//{"pair":"EMC_BTC","rate":"0.00016236","limit":"0.01623600","min":"0.00030000","minerFee":"0.00050000"}
+//{"pair":"TLC_BTC","rate":"0.00016236","limit":"0.01623600","min":"0.00030000","minerFee":"0.00050000"}
 
 //-----------------------------------------------------
-// Creatse SEND exchange channel for 
+// Creatse SEND exchange channel for
 // Send "amount" in external currecny "to" address
 // Fills m_depAddr..m_txKey, and updates m_rate
 // Returns error text, or empty string, if OK
@@ -448,13 +448,13 @@ string ExchCoinSwitch::Send(const string &to, double amount) {
     UniValue Resp(httpsFetch("/api/sendamount", &Req));
     LogPrint("exch", "DBG: ExchCoinSwitch::Send(%s|%s) returns <%s>\n\n", Host().c_str(), m_pair.c_str(), Resp.write(0, 0, 0).c_str());
     m_rate     = atof(Resp["rate"].get_str().c_str());
-    m_depAddr  = Resp["deposit"].get_str();			// Address to pay EMC
+    m_depAddr  = Resp["deposit"].get_str();			// Address to pay TLC
     m_outAddr  = Resp["withdrawal"].get_str();			// Address to pay from exchange
-    m_depAmo   = atof(Resp["deposit_amount"].get_str().c_str());// amount in EMC
+    m_depAmo   = atof(Resp["deposit_amount"].get_str().c_str());// amount in TLC
     m_outAmo   = atof(Resp["withdrawal_amount"].get_str().c_str());// Amount transferred to BTC
     m_txKey    = Name() + ':' + Resp["key"].get_str();		// TX reference key
 
-    // Adjust deposit amount to 1EMCent, upward
+    // Adjust deposit amount to 1TLCent, upward
     m_depAmo = ceil(m_depAmo * 100.0) / 100.0;
 
     return "";
@@ -555,7 +555,7 @@ void exch_test() {
       //string err(exch->MarketInfo("zzQ"));
       printf("exch_test:MarketInfo returned: [%s]\n", err.c_str());
       if(!err.empty()) break;
-      printf("exch_test:Values from exch: m_rate=%lf; m_limit=%lf; m_min=%lf; m_minerFee=%lf\n", 
+      printf("exch_test:Values from exch: m_rate=%lf; m_limit=%lf; m_min=%lf; m_minerFee=%lf\n",
 	      exch->m_rate, exch->m_limit, exch->m_min, exch->m_minerFee);
 
       exit(0);

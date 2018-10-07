@@ -1,0 +1,7 @@
+contrib/debian/tlc usr/bin
+contrib/debian/telechain.conf var/lib/tlc/.telechain
+contrib/debian/telechaind.service lib/systemd/system
+contrib/debian/telechaind.logrotate etc/logrotate.d
+usr/local/bin/telechaind usr/bin
+usr/local/bin/telechain-cli usr/bin
+usr/local/bin/telechain-tx usr/bin

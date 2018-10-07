@@ -1,4 +1,4 @@
-﻿//EmailLineEdit.cpp by Emercoin developers
+﻿//EmailLineEdit.cpp by Telechain developers
 #include "EmailLineEdit.h"
 
 EmailLineEdit::EmailLineEdit() {
